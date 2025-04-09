@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="MAIN" Id="{289bbdbb-ad67-4d57-86ad-3245f2cb5119}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	bDoorC AT%Q* : BOOL;
+	bDoorO AT%Q* : BOOL;
+	bVentil AT%I* : BOOL;
+	
+	fbTestMaschinentuer : FB_TestMaschinentuer;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+fbTestMaschinentuer(bVentil:= bVentil ,
+ 					bDoorC=> bDoorC , 
+					bDoorO=> bDoorO);]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="11" Count="0" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="14" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

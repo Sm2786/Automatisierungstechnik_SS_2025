@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="FB_Foerderband" Id="{2819a62a-8874-4d2c-b723-f866df5fb0bc}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Foerderband
+VAR_INPUT
+	bEnable : BOOL;
+	bExecute : BOOL;
+	bHalt : BOOL;
+END_VAR
+
+VAR_OUTPUT
+	eState : eBetriebszustand;
+END_VAR
+VAR
+	nState : INT := 0;
+	rVelocity : REAL;
+	rAcceleration : REAL;
+	// Motionblöcke der Tc2_Mc2
+	mcReset : MC_Reset;
+	mcPower : MC_Power;
+	mcVelocity : MC_MoveVelocity;
+	mcHalt : MC_Halt;
+END_VAR
+
+VAR_IN_OUT
+	ax : Axis_Ref;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[ax.ReadStatus();
+mcReset(
+	Axis:= ax, 
+	Execute:= , 
+	Done=> , 
+	Busy=> , 
+	Error=> , 
+	ErrorID=> );
+	
+mcPower(
+	Axis:= ax, 
+	Enable:= , 
+	Enable_Positive:= , 
+	Enable_Negative:= , 
+	Override:= , 
+	BufferMode:= , 
+	Options:= , 
+	Status=> , 
+	Busy=> , 
+	Error=> , 
+	ErrorID=> );
+
+mcVelocity(
+	Axis:= ax, 
+	Execute:= , 
+	Velocity:= 30, 
+	Acceleration:= 60, 
+	Deceleration:= , 
+	Jerk:= , 
+	Direction:= MC_Positive_Direction, 
+	BufferMode:= , 
+	Options:= , 
+	InVelocity=> , 
+	Busy=> , 
+	Active=> , 
+	CommandAborted=> , 
+	Error=> , 
+	ErrorID=> );
+	
+mcHalt(
+	Axis:= ax, 
+	Execute:= , 
+	Deceleration:= 60, 
+	Jerk:= , 
+	BufferMode:= , 
+	Options:= , 
+	Done=> , 
+	Busy=> , 
+	Active=> , 
+	CommandAborted=> , 
+	Error=> , 
+	ErrorID=> );
+	
+IF NOT mcPower.Status THEN
+	nState := 0;
+END_IF
+
+CASE nState OF
+	
+END_CASE]]></ST>
+    </Implementation>
+    <LineIds Name="FB_Foerderband">
+      <LineId Id="96" Count="0" />
+      <LineId Id="37" Count="5" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="45" Count="10" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="57" Count="15" />
+      <LineId Id="56" Count="0" />
+      <LineId Id="73" Count="0" />
+      <LineId Id="75" Count="11" />
+      <LineId Id="74" Count="0" />
+      <LineId Id="87" Count="0" />
+      <LineId Id="89" Count="2" />
+      <LineId Id="93" Count="0" />
+      <LineId Id="92" Count="0" />
+      <LineId Id="94" Count="1" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
