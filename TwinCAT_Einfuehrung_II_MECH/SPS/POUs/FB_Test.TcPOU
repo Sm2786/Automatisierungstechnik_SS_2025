@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="FB_Test" Id="{d548480f-9773-47f3-b7ee-df6e2946a893}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Test
+VAR_INPUT
+	bVentil : BOOL;
+	
+END_VAR
+VAR_OUTPUT
+	bDoorC : BOOL;
+	bDoorO : BOOL;
+END_VAR
+VAR
+	nCounter : INT := 0;
+	timer : TON;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF bVentil THEN
+	bDoorC := FALSE;
+	timer(IN:= NOT bDoorC , PT:= T#5S , Q=> bDoorO := TRUE , ET=> );
+	//bDoorO := TRUE;
+	
+END_IF
+
+IF NOT bVentil THEN
+	bDoorO := FALSE;
+	timer(IN:= NOT bDoorO , PT:= T#5S , Q=> bDoorC := TRUE , ET=> );
+	//bDoorC := TRUE;
+END_IF
+
+//Funktioniert nicht !]]></ST>
+    </Implementation>
+    <LineIds Name="FB_Test">
+      <LineId Id="9" Count="0" />
+      <LineId Id="19" Count="1" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="15" Count="1" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="25" Count="1" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="40" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

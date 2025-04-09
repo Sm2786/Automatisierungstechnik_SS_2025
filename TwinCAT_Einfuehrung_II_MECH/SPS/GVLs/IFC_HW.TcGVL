@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <GVL Name="IFC_HW" Id="{6d93a28a-bcbe-4118-afde-16fb93b1555f}">
+    <Declaration><![CDATA[// In dieser GVL werden alle Variablen deklariert die auf die realen Klemmen zugreifen
+VAR_GLOBAL
+	
+	// Allgemeine Variablen fur MAIN und HMI
+		bEnable		AT%I*	: BOOL;			// Enable Factory (HMI Production Umgebung)
+		bExecute	AT%I*	: BOOL;			// Startsignal	(Start Knopf Konsole)
+		bStop				: BOOL;			// Stop Variable (interne Variable um FB's zu stoppen)
+		
+	// Station Statusampel	
+		bAmpelRot 	AT%Q* 	: BOOL;			// Signal-LED Rot
+		bAmpelGelb 	AT%Q* 	: BOOL;			// Signal-LED Gelb
+		bAmpelGrun 	AT%Q* 	: BOOL;			// Signal-LED Grun
+			
+	// Station Vereinzelung
+		bEinzelSens1 	AT%I*	: BOOL;					// Separation Sensor 1 (Kammer)
+		bEinzelSens2 	AT%I*	: BOOL;					// Separation Sensor 2 (Rohr)
+		bEinzelSens3 	AT%I*	: BOOL;					// Separation Sensor 3 (Flasche auf Kopf)
+		bR1AKT1 		AT%Q* 	: BOOL := FALSE;		// Relais 1 Aktor 1 (Schleuse Oben öffnen)
+		bR2AKT1 		AT%Q* 	: BOOL := TRUE; 		// Relais 2 Aktor 1 (Schleuse Oben schließen)
+		bR1AKT2 		AT%Q* 	: BOOL := FALSE;		// Relais 1 Aktor 2 (Schleuse Unten öffne)
+		bR2AKT2 		AT%Q* 	: BOOL := TRUE;			// Relais 2 Aktor 2	(Schleuse Unten schließen)
+	
+	// Station Forderband
+		bBandSens1 	AT %I*	: BOOL;		// Forderband Sensor 1 (Extruder 1)
+		bBandSens2	AT %I*	: BOOL;		// Forderband Sensor 2 (Extruder 2)
+		bBandSens3 	AT %I*	: BOOL;		// Forderband Sensor 3 (Extruder 3)
+		bBandSens4 	AT %I*	: BOOL;		// Forderband Sensor 4 (Übergabe Roboter)
+		bBandHub1 	AT %Q*	: BOOL;		// Forderband Hubmagnet 1 (Schleuse Extruder 1)
+		bBandHub2 	AT %Q*	: BOOL;		// Forderband Hubmagnet 1 (Schleuse Extruder 2)
+		bBandHub3 	AT %Q*	: BOOL;		// Forderband Hubmagnet 1 (Schleuse Extruder 3)
+		
+		ax_Extruder1 	: AXIS_REF;		// Forderband NC-Achse Extruder 1
+		ax_Extruder2 	: AXIS_REF;		// Forderband NC-Achse Extruder 2
+		ax_Extruder3 	: AXIS_REF;		// Forderband NC-Achse Extruder 3
+		ax_BandMotor 	: AXIS_REF;		// Forderband NC-Achse Band
+		
+		iBandFullmenge1		: INT := 1;	// in Gramm (Soll Füllmenge Extruder 1)
+		iBandFullmenge2		: INT := 1;	// in Gramm (Soll Füllmenge Extruder 2)
+		iBandFullmenge3		: INT := 1;	// in Gramm (Soll Füllmenge Extruder 3)
+		
+	//Füllstandsüberwachung
+		iFillSens1 AT%I*	: UINT;		// Füllstandssensor im Granulatspeicher 1
+		iFillSens2 AT%I*	: UINT;		// Füllstandssensor im Granulatspeicher 2
+		iFillSens3 AT%I*	: UINT;		// Füllstandssensor im Granulatspeicher 3
+		
+		rFillLevelPercent1	: REAL;		// Füllstand im Granulatspeicher 1 in %
+		rFillLevelGramm1	: REAL;		// Füllstand im Granulatspeicher 1 in g
+		rFillLevelPercent2	: REAL;		// Füllstand im Granulatspeicher 2 in %
+		rFillLevelGramm2	: REAL;		// Füllstand im Granulatspeicher 2 in g
+		rFillLevelPercent3	: REAL;		// Füllstand im Granulatspeicher 3 in %
+		rFillLevelGramm3	: REAL;		// Füllstand im Granulatspeicher 3 in g
+		
+		rMaxFillLevel 		: REAL := 375;	// Kalibrierter Füllstand für 10% * 10
+		
+	// Station Waage
+		sWaageNachricht		: STRING;	// Nachricht von Wagezelle (fur virtuelle Inbetriebnahme notig)
+		bWaageNull			: BOOL;		// TARA Waage (Waage auf Null setzen)
+		iWaageMesswert		: INT;		// Messwert der Waage
+		
+	// Station Behalteridentifikation
+		bIdSensorTrager		: BOOL;		// Sensor bei Erkennung eines Datentrager
+		sIdNachricht		: STRING;	// Nachricht von RFID-System (fur virtuelle Inbetriebnahme notig)
+		sSeriennummer		: STRING;	// Seriennummer RFID-Tag
+		
+	//Temperierstation
+		bVentilator1 	AT %Q*	: BOOL;		// Ventilator 1
+		bVentilator2 	AT %Q*	: BOOL;		// Ventilator 2
+		bVentilator3 	AT %Q*	: BOOL;		// Ventilator 3
+		
+		iTempSens1 		AT%I*	: UINT;		// Temperatursensor 1
+		iTempSens2 		AT%I*	: UINT;		// Temperatursensor 2
+		iHeizpatrone 	AT%Q*	: UINT;		// Heizpatronen
+		
+		iMaxTemp				: UINT := 5500;		// in °C * 100
+		
+	// Station Manipulator
+		bManEndXmin 		AT%I* 	: BOOL := TRUE;		// Manipulator min Endschalter Achse x
+		bManEndYmin 		AT%I* 	: BOOL := TRUE;		// Manipulator min Endschalter Achse y
+		bManEndZmin 		AT%I* 	: BOOL := TRUE;		// Manipulator min Endschalter Achse z
+		bManEndGmin 		AT%I* 	: BOOL := TRUE;		// Manipulator min Endschalter Achse Gripper
+		bManEndXmax 		AT%I* 	: BOOL := TRUE;		// Manipulator max Endschalter Achse x
+		bManEndYmax 		AT%I* 	: BOOL := TRUE;		// Manipulator max Endschalter Achse y
+		bManEndZmax 		AT%I* 	: BOOL := TRUE;		// Manipulator max Endschalter Achse z
+		bManEndGmax 		AT%I* 	: BOOL := TRUE;		// Manipulator max Endschalter Achse Gripper
+		bManBrakeZ			AT%Q*	: BOOL := FALSE;	// Bremse Achse z
+		
+		ax_ManX			: AXIS_REF;			// Manipulator NC-Achse x
+		ax_ManY			: AXIS_REF;			// Manipulator NC-Achse y
+		ax_ManZ			: AXIS_REF;			// Manipulator NC-Achse z
+		ax_ManG			: AXIS_REF; 		// Manipulator NC-Achse Gripper
+		
+		bGripperClosed		AT%Q*	: BOOL; 			// signal if gripper is closed ONLY USED IN SIM
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="MAIN" Id="{219d1e10-9346-4a6f-b787-d48963a9158a}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	fbVereinzelung : FB_Vereinzelung;
+	fbZylinder1 : FB_Zylinder;
+	fbZylinder2 : FB_Zylinder;
+
+		
+	MCPower : MC_Power;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IFC_HW.ax_BandMotor.Readstatus();
+
+MCPower(
+	Axis:= IFC_HW.ax_BandMotor, 
+	Enable:= TRUE, 
+	Enable_Positive:= TRUE, 
+	Enable_Negative:= TRUE, 
+	Override:= , 
+	BufferMode:= , 
+	Options:= , 
+	Status=> , 
+	Busy=> , 
+	Error=> , 
+	ErrorID=> );
+
+fbVereinzelung(
+	bEnable:= IFC_HW.bEnable, 
+	bExecute:= IFC_HW.bExecute, 
+	bSensor1:= IFC_HW.bEinzelSens1, 
+	bSensor2:= IFC_HW.bEinzelSens2, 
+	bSensor3:= IFC_HW.bEinzelSens3, 
+	bSensor4:= IFC_HW.bBandSens1, 
+	bGate1=> fbZylinder1.bGate, 
+	bGate2=> fbZylinder2.bGate, 
+	eState=> );
+
+fbZylinder1(bGate:= , bError:= , bR1=> IFC_HW.bR1AKT1, bR2=> IFC_HW.bR2AKT1);
+fbZylinder2(bGate:= , bError:= , bR1=> IFC_HW.bR1AKT2, bR2=> IFC_HW.bR2AKT2);
+]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="84" Count="0" />
+      <LineId Id="89" Count="11" />
+      <LineId Id="85" Count="1" />
+      <LineId Id="64" Count="8" />
+      <LineId Id="53" Count="0" />
+      <LineId Id="75" Count="0" />
+      <LineId Id="55" Count="0" />
+      <LineId Id="76" Count="0" />
+      <LineId Id="54" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
