@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
-  <POU Name="FB_Foerderband" Id="{ab4d5564-6fc9-43b4-b6f3-51bbf99b68db}" SpecialFunc="None">
+  <POU Name="FB_Foerderband" Id="{2819a62a-8874-4d2c-b723-f866df5fb0bc}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_Foerderband
 VAR_INPUT
-	//Steuereingänge
 	bEnable : BOOL;
 	bExecute : BOOL;
 	bHalt : BOOL;
 END_VAR
+
 VAR_OUTPUT
 	eState : eBetriebszustand;
 END_VAR
@@ -15,20 +15,18 @@ VAR
 	nState : INT := 0;
 	rVelocity : REAL;
 	rAcceleration : REAL;
-	// Motion Blöcke der Tc2_Mc2
+	// Motionblöcke der Tc2_Mc2
 	mcReset : MC_Reset;
 	mcPower : MC_Power;
 	mcVelocity : MC_MoveVelocity;
 	mcHalt : MC_Halt;
- 
 END_VAR
+
 VAR_IN_OUT
 	ax : Axis_Ref;
-END_VAR
-]]></Declaration>
+END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[ax.ReadStatus();
-
 mcReset(
 	Axis:= ax, 
 	Execute:= , 
@@ -49,7 +47,7 @@ mcPower(
 	Busy=> , 
 	Error=> , 
 	ErrorID=> );
-	
+
 mcVelocity(
 	Axis:= ax, 
 	Execute:= , 
@@ -86,55 +84,26 @@ IF NOT mcPower.Status THEN
 END_IF
 
 CASE nState OF
-	0: // Status Off
-	eState := eBetriebszustand.Off;
 	
-	IF mcPower.Status AND bEnable THEN
-		nState := 20; //Ready
-	ELSIF bEnable AND NOT mcPower.Status THEN
-		nState := 10; // Init-Reset
-	END_IF
-	
-	10: // Init-Reset
-	eState := eBetriebszustand.Init;
-	
-	mcReset.Execute := TRUE;
-	
-	
-	
-	
-END_CASE
-	]]></ST>
+END_CASE]]></ST>
     </Implementation>
     <LineIds Name="FB_Foerderband">
-      <LineId Id="89" Count="1" />
-      <LineId Id="29" Count="5" />
+      <LineId Id="96" Count="0" />
+      <LineId Id="37" Count="5" />
       <LineId Id="9" Count="0" />
-      <LineId Id="35" Count="0" />
-      <LineId Id="37" Count="10" />
-      <LineId Id="36" Count="0" />
-      <LineId Id="48" Count="0" />
-      <LineId Id="50" Count="14" />
-      <LineId Id="49" Count="0" />
-      <LineId Id="65" Count="0" />
-      <LineId Id="68" Count="11" />
-      <LineId Id="66" Count="0" />
-      <LineId Id="80" Count="1" />
-      <LineId Id="83" Count="1" />
-      <LineId Id="86" Count="0" />
-      <LineId Id="85" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="45" Count="10" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="57" Count="15" />
+      <LineId Id="56" Count="0" />
+      <LineId Id="73" Count="0" />
+      <LineId Id="75" Count="11" />
+      <LineId Id="74" Count="0" />
       <LineId Id="87" Count="0" />
-      <LineId Id="92" Count="0" />
-      <LineId Id="102" Count="0" />
-      <LineId Id="91" Count="0" />
+      <LineId Id="89" Count="2" />
       <LineId Id="93" Count="0" />
-      <LineId Id="95" Count="1" />
-      <LineId Id="94" Count="0" />
-      <LineId Id="103" Count="5" />
-      <LineId Id="100" Count="1" />
-      <LineId Id="97" Count="0" />
-      <LineId Id="88" Count="0" />
-      <LineId Id="67" Count="0" />
+      <LineId Id="92" Count="0" />
+      <LineId Id="94" Count="1" />
     </LineIds>
   </POU>
 </TcPlcObject>

@@ -3,43 +3,25 @@
   <PropertyGroup>
     <FileVersion>1.0.0.0</FileVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{596004d0-036b-41d3-a7cc-3d922393aaea}</ProjectGuid>
+    <ProjectGuid>{19082648-8609-4f2c-af58-b09d5e9e8b2f}</ProjectGuid>
     <SubObjectsSortedByName>True</SubObjectsSortedByName>
     <DownloadApplicationInfo>true</DownloadApplicationInfo>
     <WriteProductVersion>true</WriteProductVersion>
     <GenerateTpy>false</GenerateTpy>
-    <Name>SPS</Name>
+    <Name>Maschine</Name>
     <ProgramVersion>3.1.4024.0</ProgramVersion>
-    <Application>{83d9f57b-e7ec-401c-bfac-8ba717104a79}</Application>
-    <TypeSystem>{447bbef4-da0d-4791-8951-efb87c1d39db}</TypeSystem>
-    <Implicit_Task_Info>{ee1162b7-5424-4a60-842c-77e7e18d7d58}</Implicit_Task_Info>
-    <Implicit_KindOfTask>{c11a3820-ad0b-4a44-9030-928042a0519c}</Implicit_KindOfTask>
-    <Implicit_Jitter_Distribution>{2681e51f-f88a-4d36-81da-975e0792c5ee}</Implicit_Jitter_Distribution>
-    <LibraryReferences>{d88649f9-f598-4df4-be2d-d71f21506224}</LibraryReferences>
+    <Application>{a8eb1ff1-a62c-4899-9821-7008a5389d08}</Application>
+    <TypeSystem>{5a2f6109-1afb-47c2-a4bc-47c689048a95}</TypeSystem>
+    <Implicit_Task_Info>{02e38fb3-bd18-43c2-bf35-cb0d802f9859}</Implicit_Task_Info>
+    <Implicit_KindOfTask>{b6d34111-15a0-497b-930f-a2dbad262cce}</Implicit_KindOfTask>
+    <Implicit_Jitter_Distribution>{fdee862b-21fb-4176-a304-e7205fa2a0db}</Implicit_Jitter_Distribution>
+    <LibraryReferences>{1d7a2c3f-0f8f-4888-9aa7-f56eccac425f}</LibraryReferences>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="DUTs\eBetriebszustand.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="GVLs\IFC_HW.TcGVL">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="PlcTask.TcTTO">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\FB_Ampel.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\FB_Blinklicht.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\FB_EZylinder.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\FB_Foerderband.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\FB_Vereinzelung.TcPOU">
+    <Compile Include="POUs\FB_TestMaschinentuer.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\MAIN.TcPOU">
@@ -53,9 +35,6 @@
     <Folder Include="POUs" />
   </ItemGroup>
   <ItemGroup>
-    <PlaceholderReference Include="Tc2_MC2">
-      <DefaultResolution>Tc2_MC2, * (Beckhoff Automation GmbH)</DefaultResolution>
-    </PlaceholderReference>
     <PlaceholderReference Include="Tc2_Standard">
       <DefaultResolution>Tc2_Standard, * (Beckhoff Automation GmbH)</DefaultResolution>
       <Namespace>Tc2_Standard</Namespace>
@@ -70,7 +49,7 @@
     </PlaceholderReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="SPS.tmc">
+    <None Include="Maschine.tmc">
       <SubType>Content</SubType>
     </None>
   </ItemGroup>

@@ -1,22 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
-  <POU Name="MAIN" Id="{219d1e10-9346-4a6f-b787-d48963a9158a}" SpecialFunc="None">
+  <POU Name="MAIN" Id="{e19b8e30-f99f-45cf-bb86-ad2b8de51b93}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
 	fbVereinzelung : FB_Vereinzelung;
-	fbZylinder1 : FB_Zylinder;
-	fbZylinder2 : FB_Zylinder;
-
-		
+	fbEZylinder1 : FB_EZylinder;
+	fbEZylinder2 : FB_EZylinder;
+	
 	MCPower : MC_Power;
 END_VAR
+	
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[IFC_HW.ax_BandMotor.Readstatus();
+      <ST><![CDATA[IFC_HW.ax_BandMotor.ReadStatus();
 
 MCPower(
-	Axis:= IFC_HW.ax_BandMotor, 
-	Enable:= TRUE, 
+	Axis:= IFC_HW.ax_BandMotor , 
+	Enable:= TRUE , 
 	Enable_Positive:= TRUE, 
 	Enable_Negative:= TRUE, 
 	Override:= , 
@@ -27,6 +27,7 @@ MCPower(
 	Error=> , 
 	ErrorID=> );
 
+//Statusampel Implementieren
 fbVereinzelung(
 	bEnable:= IFC_HW.bEnable, 
 	bExecute:= IFC_HW.bExecute, 
@@ -34,24 +35,25 @@ fbVereinzelung(
 	bSensor2:= IFC_HW.bEinzelSens2, 
 	bSensor3:= IFC_HW.bEinzelSens3, 
 	bSensor4:= IFC_HW.bBandSens1, 
-	bGate1=> fbZylinder1.bGate, 
-	bGate2=> fbZylinder2.bGate, 
+	bGate1=> fbEZylinder1.bGate, 
+	bGate2=> fbEZylinder2.bGate, 
 	eState=> );
-
-fbZylinder1(bGate:= , bError:= , bR1=> IFC_HW.bR1AKT1, bR2=> IFC_HW.bR2AKT1);
-fbZylinder2(bGate:= , bError:= , bR1=> IFC_HW.bR1AKT2, bR2=> IFC_HW.bR2AKT2);
-]]></ST>
+	
+fbEZylinder1(bGate:= , bError:= ,
+			 bR1=> IFC_HW.bR1AKT1, bR2=> IFC_HW.bR2AKT1);
+fbEZylinder2(bGate:= , bError:= , 
+			bR1=> IFC_HW.bR1AKT2, bR2=> IFC_HW.bR2AKT2 );]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
-      <LineId Id="84" Count="0" />
-      <LineId Id="89" Count="11" />
-      <LineId Id="85" Count="1" />
-      <LineId Id="64" Count="8" />
-      <LineId Id="53" Count="0" />
-      <LineId Id="75" Count="0" />
-      <LineId Id="55" Count="0" />
-      <LineId Id="76" Count="0" />
-      <LineId Id="54" Count="0" />
+      <LineId Id="122" Count="0" />
+      <LineId Id="128" Count="11" />
+      <LineId Id="127" Count="0" />
+      <LineId Id="124" Count="0" />
+      <LineId Id="123" Count="0" />
+      <LineId Id="97" Count="8" />
+      <LineId Id="64" Count="0" />
+      <LineId Id="106" Count="1" />
+      <LineId Id="112" Count="2" />
     </LineIds>
   </POU>
 </TcPlcObject>
