@@ -3,6 +3,7 @@
   <POU Name="MAIN" Id="{e19b8e30-f99f-45cf-bb86-ad2b8de51b93}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
+	fbAmpel : FB_Ampel;
 	fbVereinzelung : FB_Vereinzelung;
 	fbEZylinder1 : FB_EZylinder;
 	fbEZylinder2 : FB_EZylinder;
@@ -42,7 +43,11 @@ fbVereinzelung(
 fbEZylinder1(bGate:= , bError:= ,
 			 bR1=> IFC_HW.bR1AKT1, bR2=> IFC_HW.bR2AKT1);
 fbEZylinder2(bGate:= , bError:= , 
-			bR1=> IFC_HW.bR1AKT2, bR2=> IFC_HW.bR2AKT2 );]]></ST>
+			bR1=> IFC_HW.bR1AKT2, bR2=> IFC_HW.bR2AKT2 );
+			
+fbAmpel(eState:= fbVereinzelung.eState, bAmpelGrun=> IFC_HW.bAmpelGrun, bAmpelRot=> IFC_HW.bAmpelRot , bAmpelGelb=> IFC_HW.bAmpelGelb);
+			
+]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
       <LineId Id="122" Count="0" />
@@ -54,6 +59,8 @@ fbEZylinder2(bGate:= , bError:= ,
       <LineId Id="64" Count="0" />
       <LineId Id="106" Count="1" />
       <LineId Id="112" Count="2" />
+      <LineId Id="152" Count="1" />
+      <LineId Id="150" Count="1" />
     </LineIds>
   </POU>
 </TcPlcObject>

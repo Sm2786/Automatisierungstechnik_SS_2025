@@ -17,6 +17,52 @@ END_VAR
     <Implementation>
       <ST><![CDATA[CASE eState OF
 	eBetriebszustand.Off:
+		bAmpelGrun := FALSE;
+		bAmpelGelb := FALSE;
+		bAmpelRot := TRUE;
+	
+	eBetriebszustand.Error:
+		bAmpelGrun := FALSE;
+		bAmpelGelb := FALSE;
+		fbBlinklicht(bStartStop:= TRUE, tPeriode:= T#1S, bBlink=> bAmpelRot );
+	
+	eBetriebszustand.Setup:
+		bAmpelGrun := FALSE;
+		bAmpelGelb := TRUE;
+		bAmpelRot := FALSE;
+	
+	eBetriebszustand.Warning:
+		bAmpelGrun := FALSE;
+		fbBlinklicht(bStartStop:= TRUE, tPeriode:= T#1S, bBlink=> bAmpelGelb );
+		bAmpelRot := FALSE;
+		
+	eBetriebszustand.Init:
+		bAmpelGrun := TRUE;
+		bAmpelGelb := TRUE;
+		bAmpelRot := FALSE;
+	
+	eBetriebszustand.Ready:
+		bAmpelGrun := TRUE;
+		bAmpelGelb := FALSE;
+		bAmpelRot := FALSE;
+	
+	eBetriebszustand.Production:
+		bAmpelRot := FALSE;
+		fbBlinklicht(bStartStop:= TRUE , tPeriode:= T#1S, bBlink=> bAmpelGrun);
+		fbBlinklicht(bStartStop:= TRUE , tPeriode:= T#1S, bBlink=> bAmpelGelb);
+	
+	eBetriebszustand.Done:
+		fbBlinklicht(bStartStop:= TRUE , tPeriode:= T#1S, bBlink=> bAmpelGrun);
+		bAmpelGelb := FALSE;
+		bAmpelRot := FALSE;
+		
+	eBetriebszustand.Stop:
+		bAmpelGrun := FALSE;
+		fbBlinklicht(bStartStop:= TRUE , tPeriode:= T#1S, bBlink=> bAmpelRot);
+		fbBlinklicht(bStartStop:= TRUE , tPeriode:= T#1S, bBlink=> bAmpelGelb);
+	
+	
+	
 	
 	
 	
@@ -25,6 +71,33 @@ END_CASE]]></ST>
     </Implementation>
     <LineIds Name="FB_Ampel">
       <LineId Id="17" Count="1" />
+      <LineId Id="53" Count="1" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="94" Count="1" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="67" Count="0" />
+      <LineId Id="69" Count="2" />
+      <LineId Id="68" Count="0" />
+      <LineId Id="72" Count="1" />
+      <LineId Id="75" Count="1" />
+      <LineId Id="74" Count="0" />
+      <LineId Id="77" Count="0" />
+      <LineId Id="57" Count="3" />
+      <LineId Id="78" Count="1" />
+      <LineId Id="81" Count="1" />
+      <LineId Id="80" Count="0" />
+      <LineId Id="61" Count="1" />
+      <LineId Id="65" Count="0" />
+      <LineId Id="63" Count="1" />
+      <LineId Id="83" Count="1" />
+      <LineId Id="87" Count="1" />
+      <LineId Id="86" Count="0" />
+      <LineId Id="89" Count="4" />
+      <LineId Id="85" Count="0" />
+      <LineId Id="66" Count="0" />
+      <LineId Id="49" Count="0" />
       <LineId Id="35" Count="0" />
       <LineId Id="22" Count="0" />
       <LineId Id="21" Count="0" />
