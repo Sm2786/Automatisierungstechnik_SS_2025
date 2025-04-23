@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="FB_TransportA" Id="{285adb4c-0baa-4999-b591-330d79bca8bd}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_TransportA
+VAR_INPUT
+	bStop1: BOOL;
+	bStop2: BOOL;
+	bStop3: BOOL;
+	
+END_VAR
+VAR_OUTPUT
+	// Hardware Signale
+	bStopper1 : BOOL;
+	bStopper2 : BOOL;
+	bStopper3 : BOOL;
+	
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[bStopper1 := bStop1;
+bStopper2 := bStop2;
+bStopper3 := bStop3;
+]]></ST>
+    </Implementation>
+    <LineIds Name="FB_TransportA">
+      <LineId Id="9" Count="0" />
+      <LineId Id="19" Count="2" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
