@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
-  <POU Name="FB_Foerderband" Id="{2819a62a-8874-4d2c-b723-f866df5fb0bc}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK FB_Foerderband
+  <POU Name="FB_TransportBand" Id="{2819a62a-8874-4d2c-b723-f866df5fb0bc}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_TransportBand
 VAR_INPUT
 	bEnable : BOOL;
 	bExecute : BOOL;
@@ -93,50 +93,68 @@ CASE nState OF
 	//Fehler in der Init Logik
 	IF bEnable AND mcPower.Status THEN
 		nState := 20; //Ready
-	ELSIF bEnable AND mcPower.Status THEN
-		nState := 10; // Init-Ready	
+	ELSIF bEnable AND NOT mcPower.Status THEN
+		nState := 10; // Init-Rest
 	END_IF
-10: //Init - Reset
-eState := eBetriebszustand.Init;
-mcReset.Execute := TRUE;
-IF mcReset.Done THEN
+	
+	10: //Init - Reset
+	eState := eBetriebszustand.Init;
+	mcReset.Execute := TRUE;
+	mcPower.Enable := FALSE;
+	IF mcReset.Done THEN
+		mcReset.Execute := FALSE;
+		nState := 11;
+	END_IF
+	
+	11: // Init - Power
+	eState := eBetriebszustand.Init;
+	mcPower.Enable := TRUE;
 	mcReset.Execute := FALSE;
-	nState := 20;
-END_IF
-
-20: //Ready
-eState := eBetriebszustand.Ready;
-IF bExecute THEN
-    nState := 30;
-END_IF
-
-30: //Production
-eState := eBetriebszustand.Production;
-mcVelocity.Execute := TRUE;
-mcVelocity.Velocity := rVelocity;
-mcVelocity.Acceleration := rAcceleration;
-mcVelocity.Direction := MC_Positive_Direction;
-
-IF bHalt THEN 
+	IF mcPower.Status THEN
+		nState := 20;
+	END_IF
+	
+	20: //Ready
+	eState := eBetriebszustand.Ready;
+	IF bExecute THEN
+		nState := 30;
+	END_IF
+	
+	30: //Production
+	eState := eBetriebszustand.Production;
+	mcVelocity.Execute := TRUE;
+	mcVelocity.Velocity := rVelocity;
+	mcVelocity.Acceleration := rAcceleration;
+	mcVelocity.Direction := MC_Positive_Direction;
+	
+	IF bHalt THEN 
+		mcVelocity.Execute := FALSE;
+		nState := 31;
+	END_IF
+	
+	31: // Halten
+	eState := eBetriebszustand.Production;
 	mcVelocity.Execute := FALSE;
-	nState := 40;
-END_IF
-
-40:
-eState := eBetriebszustand.Stop;
-mcHalt.Execute := TRUE;
-mcHalt.Deceleration := rAcceleration;
-
-IF mcHalt.Done THEN
+	mcHalt.Execute := TRUE;
+	mcVelocity.Acceleration := rAcceleration;
+	IF mcHalt.Done THEN
+		nState := 40;
+	END_IF
+	
+	40: // Fertig
+	eState := eBetriebszustand.Done;
 	mcHalt.Execute := FALSE;
-	nState := 20; // Zurück zu Ready
-END_IF
-
+	// mcHalt.Deceleration := rAcceleration;
 	
+	IF NOT bExecute THEN
+		nState := 20; 
+	END_IF
 	
+		
+		
 END_CASE]]></ST>
     </Implementation>
-    <LineIds Name="FB_Foerderband">
+    <LineIds Name="FB_TransportBand">
       <LineId Id="96" Count="0" />
       <LineId Id="37" Count="5" />
       <LineId Id="9" Count="0" />
@@ -159,11 +177,18 @@ END_CASE]]></ST>
       <LineId Id="137" Count="0" />
       <LineId Id="139" Count="0" />
       <LineId Id="135" Count="0" />
+      <LineId Id="201" Count="0" />
       <LineId Id="143" Count="0" />
       <LineId Id="145" Count="0" />
-      <LineId Id="151" Count="3" />
+      <LineId Id="151" Count="0" />
+      <LineId Id="202" Count="0" />
+      <LineId Id="152" Count="2" />
       <LineId Id="150" Count="0" />
+      <LineId Id="203" Count="1" />
       <LineId Id="148" Count="0" />
+      <LineId Id="205" Count="0" />
+      <LineId Id="207" Count="3" />
+      <LineId Id="206" Count="0" />
       <LineId Id="147" Count="0" />
       <LineId Id="149" Count="0" />
       <LineId Id="155" Count="1" />
@@ -178,13 +203,15 @@ END_CASE]]></ST>
       <LineId Id="166" Count="0" />
       <LineId Id="168" Count="0" />
       <LineId Id="167" Count="0" />
+      <LineId Id="211" Count="8" />
       <LineId Id="169" Count="0" />
       <LineId Id="144" Count="0" />
       <LineId Id="170" Count="0" />
       <LineId Id="172" Count="0" />
       <LineId Id="171" Count="0" />
-      <LineId Id="174" Count="3" />
+      <LineId Id="174" Count="0" />
       <LineId Id="173" Count="0" />
+      <LineId Id="220" Count="1" />
       <LineId Id="123" Count="0" />
       <LineId Id="120" Count="0" />
       <LineId Id="94" Count="1" />

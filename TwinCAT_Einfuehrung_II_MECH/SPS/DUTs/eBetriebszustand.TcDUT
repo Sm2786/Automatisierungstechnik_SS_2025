@@ -8,7 +8,7 @@ TYPE eBetriebszustand :
 	Off , //Nicht Betriebsbereit, ROT
 	Error , //Fehlerbehafteter Stop (Sicherheitssteuerung), ROT blinkend
 	Setup , //Wartung, GELB
-	Warning , //Nicht Fehlerbehafteter nicht geplanter Stop, GELB blinkend
+	Warning , //Nicht Fehlerbehafteter aber nicht geplanter Stop, GELB blinkend
 	Init ,  //herstellung Betriebsbereitschaft, GELB GRÜN
 	Ready , // Betriebsbereitschaft, GRÜN
 	Production , //Betrieb, GRÜN GELB blinkend

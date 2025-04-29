@@ -42,7 +42,7 @@
     <Compile Include="POUs\MAIN.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\Transport\FB_Foerderband.TcPOU">
+    <Compile Include="POUs\Transport\FB_TransportBand.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\Transport\FB_Transport.TcPOU">

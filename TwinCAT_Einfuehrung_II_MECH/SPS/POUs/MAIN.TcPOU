@@ -8,14 +8,34 @@ VAR
 	fbEZylinder1 : FB_EZylinder;
 	fbEZylinder2 : FB_EZylinder;
 	
+	
+	bSig : BOOL;
+	fTrig : F_Trig;
+	
 	MCPower : MC_Power;
 	
 	fbTransport : FB_Transport;
-END_VAR
 	
+	nStation : INT;
+END_VAR
+
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[IFC_HW.ax_BandMotor.ReadStatus();
+
+IF fbTransport.eState = eBetriebszustand.Done THEN
+	bSig := TRUE;
+ELSE
+	bSig := FALSE;
+END_IF
+
+fTrig(CLK := bSig, Q => );
+
+IF fTrig.Q THEN
+	fbTransport.nStation := fbTransport.nStation + 1;
+END_IF
+
+
 
 MCPower(
 	Axis:= IFC_HW.ax_BandMotor , 
@@ -62,11 +82,22 @@ fbEZylinder2(bGate:= , bError:= ,
 			bR1=> IFC_HW.bR1AKT2, bR2=> IFC_HW.bR2AKT2 );
 			
 fbAmpel(eState:= fbVereinzelung.eState, bAmpelGrun=> IFC_HW.bAmpelGrun, bAmpelRot=> IFC_HW.bAmpelRot , bAmpelGelb=> IFC_HW.bAmpelGelb);
-			
-]]></ST>
+			]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
       <LineId Id="122" Count="0" />
+      <LineId Id="192" Count="2" />
+      <LineId Id="198" Count="0" />
+      <LineId Id="200" Count="0" />
+      <LineId Id="195" Count="0" />
+      <LineId Id="203" Count="0" />
+      <LineId Id="202" Count="0" />
+      <LineId Id="208" Count="0" />
+      <LineId Id="207" Count="0" />
+      <LineId Id="211" Count="0" />
+      <LineId Id="210" Count="0" />
+      <LineId Id="206" Count="0" />
+      <LineId Id="204" Count="0" />
       <LineId Id="128" Count="11" />
       <LineId Id="127" Count="0" />
       <LineId Id="124" Count="0" />
@@ -79,7 +110,7 @@ fbAmpel(eState:= fbVereinzelung.eState, bAmpelGrun=> IFC_HW.bAmpelGrun, bAmpelRo
       <LineId Id="106" Count="1" />
       <LineId Id="112" Count="2" />
       <LineId Id="152" Count="1" />
-      <LineId Id="150" Count="1" />
+      <LineId Id="150" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

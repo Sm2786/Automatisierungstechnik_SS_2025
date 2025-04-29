@@ -104,7 +104,7 @@ CASE nState OF
 		
 	END_IF
 	
-	IF NOT bSensor3 THEN
+	IF NOT bSensor2 AND bSensor3 THEN
 		nState := 33;
 	END_IF
 	
