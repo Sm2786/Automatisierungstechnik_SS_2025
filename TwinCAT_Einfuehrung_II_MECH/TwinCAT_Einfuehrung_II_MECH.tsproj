@@ -1431,9 +1431,7 @@ External Setpoint Generation:
 	</ImageDatas>
 	<Project ProjectGUID="{F802DAAC-8DA7-42B6-8F7D-FC83F3FC30E2}" Target64Bit="true" ShowHideConfigurations="#x6">
 		<System>
-			<Settings MaxCpus="2" NonWinCpus="1">
-				<Cpu CpuId="1"/>
-			</Settings>
+			<Settings MaxCpus="2" NonWinCpus="1"/>
 			<Tasks>
 				<Task Id="3" Priority="20" CycleTime="100000" AmsPort="350" AdtTasks="true">
 					<Name>PlcTask</Name>
@@ -1618,7 +1616,7 @@ External Setpoint Generation:
 		</Motion>
 		<Plc>
 			<Project GUID="{596004D0-036B-41D3-A7CC-3D922393AAEA}" Name="SPS" PrjFilePath="SPS\SPS.plcproj" TmcFilePath="SPS\SPS.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="SPS\SPS.tmc" TmcHash="{670BB689-71E7-7592-D509-60A300E0444F}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="SPS\SPS.tmc" TmcHash="{510CD65B-DB2E-9B26-AA1F-353FCE357EB0}">
 					<Name>SPS Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">
@@ -1700,6 +1698,11 @@ External Setpoint Generation:
 							<Type>UINT</Type>
 						</Var>
 						<Var>
+							<Name>IFC_HW.bManEndXmin</Name>
+							<Comment><![CDATA[ Manipulator min Endschalter Achse x]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
 							<Name>IFC_HW.iTempSens1</Name>
 							<Comment><![CDATA[ Temperatursensor 1]]></Comment>
 							<Type>UINT</Type>
@@ -1708,11 +1711,6 @@ External Setpoint Generation:
 							<Name>IFC_HW.iTempSens2</Name>
 							<Comment><![CDATA[ Temperatursensor 2]]></Comment>
 							<Type>UINT</Type>
-						</Var>
-						<Var>
-							<Name>IFC_HW.bManEndXmin</Name>
-							<Comment><![CDATA[ Manipulator min Endschalter Achse x]]></Comment>
-							<Type>BOOL</Type>
 						</Var>
 						<Var>
 							<Name>IFC_HW.bManEndYmin</Name>

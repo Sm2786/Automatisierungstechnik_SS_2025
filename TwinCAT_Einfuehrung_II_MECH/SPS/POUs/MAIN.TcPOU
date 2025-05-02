@@ -16,7 +16,7 @@ VAR
 	
 	fbTransport : FB_Transport;
 	
-	nStation : INT;
+	nStation : INT := 1;
 END_VAR
 
 ]]></Declaration>
@@ -65,7 +65,7 @@ fbVereinzelung(
 fbTransport(
 	bEnable:= IFC_HW.bEnable, 
 	bExecute:= IFC_HW.bExecute, 
-	nStation:= , 
+	nStation:= nStation, 
 	bSens1:= IFC_HW.bBandSens1, 
 	bSens2:= IFC_HW.bBandSens2, 
 	bSens3:= IFC_HW.bBandSens3, 

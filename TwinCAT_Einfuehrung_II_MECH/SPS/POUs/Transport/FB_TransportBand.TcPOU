@@ -15,6 +15,7 @@ VAR
 	nState : INT := 0;
 	rVelocity : REAL;
 	rAcceleration : REAL;
+	bHaltStart : BOOL := FALSE; // Hilfsvariable, um Halt-Vorgang zu steuern
 	// Motionblöcke der Tc2_Mc2
 	mcReset : MC_Reset;
 	mcPower : MC_Power;
@@ -137,14 +138,16 @@ CASE nState OF
 	mcVelocity.Execute := FALSE;
 	mcHalt.Execute := TRUE;
 	mcVelocity.Acceleration := rAcceleration;
+	mcHalt.Error;
 	IF mcHalt.Done THEN
 		nState := 40;
 	END_IF
 	
+	
 	40: // Fertig
 	eState := eBetriebszustand.Done;
 	mcHalt.Execute := FALSE;
-	// mcHalt.Deceleration := rAcceleration;
+	//mcHalt.Deceleration := rAcceleration;
 	
 	IF NOT bExecute THEN
 		nState := 20; 
@@ -203,7 +206,13 @@ END_CASE]]></ST>
       <LineId Id="166" Count="0" />
       <LineId Id="168" Count="0" />
       <LineId Id="167" Count="0" />
-      <LineId Id="211" Count="8" />
+      <LineId Id="211" Count="2" />
+      <LineId Id="261" Count="0" />
+      <LineId Id="245" Count="0" />
+      <LineId Id="216" Count="0" />
+      <LineId Id="280" Count="0" />
+      <LineId Id="217" Count="2" />
+      <LineId Id="262" Count="0" />
       <LineId Id="169" Count="0" />
       <LineId Id="144" Count="0" />
       <LineId Id="170" Count="0" />
