@@ -135,10 +135,10 @@ CASE nState OF
 	
 	31: // Halten
 	eState := eBetriebszustand.Production;
-	mcVelocity.Execute := FALSE;
+	//mcVelocity.Execute := FALSE;
 	mcHalt.Execute := TRUE;
-	mcVelocity.Acceleration := rAcceleration;
-	mcHalt.Error;
+	mcHalt.CommandAborted;
+	//mcVelocity.Acceleration := rAcceleration;
 	IF mcHalt.Done THEN
 		nState := 40;
 	END_IF
@@ -152,9 +152,6 @@ CASE nState OF
 	IF NOT bExecute THEN
 		nState := 20; 
 	END_IF
-	
-		
-		
 END_CASE]]></ST>
     </Implementation>
     <LineIds Name="FB_TransportBand">
@@ -197,32 +194,9 @@ END_CASE]]></ST>
       <LineId Id="155" Count="1" />
       <LineId Id="146" Count="0" />
       <LineId Id="158" Count="0" />
-      <LineId Id="157" Count="0" />
-      <LineId Id="159" Count="0" />
-      <LineId Id="161" Count="2" />
-      <LineId Id="160" Count="0" />
-      <LineId Id="165" Count="0" />
-      <LineId Id="164" Count="0" />
-      <LineId Id="166" Count="0" />
-      <LineId Id="168" Count="0" />
-      <LineId Id="167" Count="0" />
-      <LineId Id="211" Count="2" />
-      <LineId Id="261" Count="0" />
-      <LineId Id="245" Count="0" />
-      <LineId Id="216" Count="0" />
-      <LineId Id="280" Count="0" />
-      <LineId Id="217" Count="2" />
-      <LineId Id="262" Count="0" />
-      <LineId Id="169" Count="0" />
-      <LineId Id="144" Count="0" />
-      <LineId Id="170" Count="0" />
-      <LineId Id="172" Count="0" />
-      <LineId Id="171" Count="0" />
-      <LineId Id="174" Count="0" />
-      <LineId Id="173" Count="0" />
-      <LineId Id="220" Count="1" />
-      <LineId Id="123" Count="0" />
-      <LineId Id="120" Count="0" />
+      <LineId Id="337" Count="15" />
+      <LineId Id="366" Count="0" />
+      <LineId Id="353" Count="12" />
       <LineId Id="94" Count="1" />
     </LineIds>
   </POU>
