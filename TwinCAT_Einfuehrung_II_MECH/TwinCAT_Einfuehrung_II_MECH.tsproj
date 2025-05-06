@@ -1616,7 +1616,7 @@ External Setpoint Generation:
 		</Motion>
 		<Plc>
 			<Project GUID="{596004D0-036B-41D3-A7CC-3D922393AAEA}" Name="SPS" PrjFilePath="SPS\SPS.plcproj" TmcFilePath="SPS\SPS.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="SPS\SPS.tmc" TmcHash="{8BE74909-06A8-AA53-9934-548249201F53}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="SPS\SPS.tmc" TmcHash="{DD1B9565-6E95-A9E7-1521-BFCB26136E74}">
 					<Name>SPS Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">

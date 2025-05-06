@@ -32,7 +32,7 @@ END_IF
 fTrig(CLK := bSig, Q => );
 
 IF fTrig.Q THEN
-	fbTransport.nStation := fbTransport.nStation + 1;
+	nStation := nStation + 1;
 END_IF
 
 

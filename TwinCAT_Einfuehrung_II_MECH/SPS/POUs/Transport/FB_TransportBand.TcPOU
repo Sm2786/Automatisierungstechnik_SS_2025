@@ -69,7 +69,7 @@ mcVelocity(
 mcHalt(
 	Axis:= ax, 
 	Execute:= , 
-	Deceleration:= 60, 
+	Deceleration:= 10, 
 	Jerk:= , 
 	BufferMode:= , 
 	Options:= , 
@@ -138,6 +138,9 @@ CASE nState OF
 	//mcVelocity.Execute := FALSE;
 	mcHalt.Execute := TRUE;
 	mcHalt.CommandAborted;
+	mcHalt.Active;
+	mcHalt.Busy;
+	mcHalt.Error;
 	//mcVelocity.Acceleration := rAcceleration;
 	IF mcHalt.Done THEN
 		nState := 40;
@@ -196,6 +199,7 @@ END_CASE]]></ST>
       <LineId Id="158" Count="0" />
       <LineId Id="337" Count="15" />
       <LineId Id="366" Count="0" />
+      <LineId Id="391" Count="2" />
       <LineId Id="353" Count="12" />
       <LineId Id="94" Count="1" />
     </LineIds>
