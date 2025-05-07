@@ -17,11 +17,16 @@ VAR
 	fbTransport : FB_Transport;
 	
 	nStation : INT := 1;
+	
+	ix : REAL;
+	ry : UINT;
 END_VAR
 
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[IFC_HW.ax_BandMotor.ReadStatus();
+      <ST><![CDATA[ry := TO_UINT(FUN_Scale(ix,4096, 0, 350, 0));
+
+IFC_HW.ax_BandMotor.ReadStatus();
 
 IF fbTransport.eState = eBetriebszustand.Done THEN
 	bSig := TRUE;
@@ -85,6 +90,7 @@ fbAmpel(eState:= fbVereinzelung.eState, bAmpelGrun=> IFC_HW.bAmpelGrun, bAmpelRo
 			]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
+      <LineId Id="230" Count="1" />
       <LineId Id="122" Count="0" />
       <LineId Id="192" Count="2" />
       <LineId Id="198" Count="0" />

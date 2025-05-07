@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="FUN_Scale" Id="{b2ad5e09-a1d4-4cd7-aad6-fef559f2c9c5}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION FUN_Scale : REAL
+VAR_INPUT
+	ix : REAL;
+	ixmax : REAL;
+	ixmin : REAL;
+	rymax : REAL;
+	rymin : REAL;
+END_VAR
+VAR
+	rk : REAL := 0.085449218;
+	rd : REAL := 0;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[rk := (rymax - rymin) / (ixmax - ixmin);
+rd := rymin - rk * ixmin;
+
+FUN_Scale := rk * ix +rd;
+
+IF FUN_Scale > rymax THEN
+	FUN_Scale := rymax;
+ELSIF FUN_Scale < rymin THEN
+	FUN_Scale := rymin;
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="FUN_Scale">
+      <LineId Id="19" Count="0" />
+      <LineId Id="8" Count="1" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="24" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -39,6 +39,9 @@
     <Compile Include="POUs\FB_Vereinzelung.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\FUN_Scale.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\MAIN.TcPOU">
       <SubType>Code</SubType>
     </Compile>
