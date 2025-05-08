@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="FB_Abfullmodul" Id="{2b61e3bd-8094-4055-9b51-7961cdd11497}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Abfullmodul
+VAR_INPUT
+	bEnable : BOOL;
+	bExecute : BOOL;
+	rDistance : REAL;
+END_VAR
+VAR_OUTPUT
+	eState : eBetriebszustand;
+END_VAR
+VAR
+	mcReset : MC_Reset;
+	mcPower : MC_Power;
+	mcMoveRelative : MC_MoveRelative;
+	nState : INT;
+	fbVereinzelung : FB_Vereinzelung;
+	fbTransport : FB_Transport;
+END_VAR
+VAR_IN_OUT
+	// Achsen Ref
+	ax : Axis_Ref;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[ax.ReadStatus();
+mcMoveRelative(
+	Axis:= ax, 
+	Execute:= , 
+	Distance:= rDistance, 
+	Velocity:= 30, 
+	Acceleration:= , 
+	Deceleration:= , 
+	Jerk:= , 
+	BufferMode:= , 
+	Options:= , 
+	Done=> , 
+	Busy=> , 
+	Active=> , 
+	CommandAborted=> , 
+	Error=> , 
+	ErrorID=> );
+	
+mcPower(
+	Axis:= ax, 
+	Enable:=  , 
+	Enable_Positive:= , 
+	Enable_Negative:= , 
+	Override:= , 
+	BufferMode:= , 
+	Options:= , 
+	Status=> , 
+	Busy=> , 
+	Error=> , 
+	ErrorID=> );
+	
+mcReset(
+	Axis:= ax , 
+	Execute:= , 
+	Done=> , 
+	Busy=> , 
+	Error=> , 
+	ErrorID=> );
+	
+IF NOT mcPower.Status THEN
+	nState := 0;
+END_IF
+
+CASE nState OF
+	0: // OFF
+	fbVereinzelung.bEnable := FALSE;
+	fbVereinzelung.bExecute := FALSE;
+	eState := eBetriebszustand.Off;
+	
+	IF bEnable THEN
+		nState := 10;
+	END_IF
+	
+	10: // INIT
+	eState := eBetriebszustand.Init;
+	fbVereinzelung.bEnable := TRUE;
+	fbVereinzelung.bExecute := FALSE;
+	
+	IF fbVereinzelung.eState = eBetriebszustand.Ready AND fbTransport.eState = eBetriebszustand.Ready;
+		
+	END_IF
+	
+END_CASE
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="FB_Abfullmodul">
+      <LineId Id="9" Count="0" />
+      <LineId Id="27" Count="14" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="46" Count="10" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="59" Count="5" />
+      <LineId Id="58" Count="0" />
+      <LineId Id="65" Count="0" />
+      <LineId Id="67" Count="1" />
+      <LineId Id="66" Count="0" />
+      <LineId Id="70" Count="0" />
+      <LineId Id="69" Count="0" />
+      <LineId Id="71" Count="0" />
+      <LineId Id="75" Count="1" />
+      <LineId Id="74" Count="0" />
+      <LineId Id="78" Count="7" />
+      <LineId Id="87" Count="0" />
+      <LineId Id="89" Count="3" />
+      <LineId Id="73" Count="0" />
+      <LineId Id="72" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="42" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

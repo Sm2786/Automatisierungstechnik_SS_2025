@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="FB_ManipulatorAchsen" Id="{f5f9672f-75f5-480b-82eb-01e8422d8822}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_ManipulatorAchsen
+VAR_INPUT
+	bEnable : BOOL;
+	bExecute : BOOL;
+	rPosition : REAL;
+	bRefSens : BOOL;
+END_VAR
+VAR_OUTPUT
+	eState : eBetriebszustand;
+END_VAR
+VAR
+	mcReset : MC_Reset;
+	mcPower : MC_Power;
+	mcMoveAbsolute : MC_MoveAbsolute;
+	mcHome : MC_Home;
+	nState : INT;
+END_VAR
+VAR_IN_OUT
+	// Achsen Ref
+	ax : Axis_Ref;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <LineIds Name="FB_ManipulatorAchsen">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
