@@ -38,7 +38,7 @@ VAR
 	
     nState : INT := 0;
 	nStation : INT;
-	bExecuteBand : BOOL;
+	
 END_VAR
 
 VAR_IN_OUT
@@ -62,7 +62,7 @@ END_VAR]]></Declaration>
 	
 fbTransport(
 	bEnable:= bEnable, 
-	bExecute:= bExecuteBand, 
+	bExecute:= bExecute, 
 	nStation:= nStation, 
 	bSens1:= bBandSens1, 
 	bSens2:= bBandSens2, 
