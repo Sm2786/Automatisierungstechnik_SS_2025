@@ -36,6 +36,9 @@
     <Compile Include="POUs\FB_Blinklicht.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\FB_Dispenser.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\FB_EZylinder.TcPOU">
       <SubType>Code</SubType>
     </Compile>

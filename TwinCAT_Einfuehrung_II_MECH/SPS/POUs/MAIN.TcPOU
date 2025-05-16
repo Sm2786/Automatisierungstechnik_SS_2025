@@ -4,20 +4,16 @@
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
 	fbAmpel : FB_Ampel;
-	fbVereinzelung : FB_Vereinzelung;
 	fbEZylinder1 : FB_EZylinder;
 	fbEZylinder2 : FB_EZylinder;
+	MCPowerBand : MC_Power;
+	MCPowerDispenser1 : MC_Power;
+	MCPowerDispenser2 : MC_Power;
+	MCPowerDispenser3 : MC_Power;
+	fbAbfullModul : FB_Abfullmodul;
 	
 	
-	bSig : BOOL;
-	fTrig : F_Trig;
-	
-	MCPower : MC_Power;
-	
-	fbTransport : FB_Transport;
-	
-	nStation : INT := 1;
-	
+
 	ix : REAL;
 	ry : UINT;
 END_VAR
@@ -27,22 +23,13 @@ END_VAR
       <ST><![CDATA[ry := TO_UINT(FUN_Scale(ix,4096, 0, 350, 0));
 
 IFC_HW.ax_BandMotor.ReadStatus();
-
-IF fbTransport.eState = eBetriebszustand.Done THEN
-	bSig := TRUE;
-ELSE
-	bSig := FALSE;
-END_IF
-
-fTrig(CLK := bSig, Q => );
-
-IF fTrig.Q THEN
-	nStation := nStation + 1;
-END_IF
+IFC_HW.ax_Extruder1.ReadStatus();
+IFC_HW.ax_Extruder2.ReadStatus();
+IFC_HW.ax_Extruder3.ReadStatus();
 
 
 
-MCPower(
+MCPowerBand(
 	Axis:= IFC_HW.ax_BandMotor , 
 	Enable:= TRUE , 
 	Enable_Positive:= TRUE, 
@@ -54,65 +41,102 @@ MCPower(
 	Busy=> , 
 	Error=> , 
 	ErrorID=> );
+	
+MCPowerDispenser1(
+	Axis:= IFC_HW.ax_Extruder1, 
+	Enable:= TRUE, 
+	Enable_Positive:= TRUE, 
+	Enable_Negative:= TRUE, 
+	Override:= , 
+	BufferMode:= , 
+	Options:= , 
+	Status=> , 
+	Busy=> , 
+	Error=> , 
+	ErrorID=> );
+	
+MCPowerDispenser2(
+	Axis:= IFC_HW.ax_Extruder2, 
+	Enable:= TRUE, 
+	Enable_Positive:= TRUE, 
+	Enable_Negative:= TRUE, 
+	Override:= , 
+	BufferMode:= , 
+	Options:= , 
+	Status=> , 
+	Busy=> , 
+	Error=> , 
+	ErrorID=> );
+	
+MCPowerDispenser3(
+	Axis:= IFC_HW.ax_Extruder3, 
+	Enable:= TRUE, 
+	Enable_Positive:= TRUE, 
+	Enable_Negative:= TRUE, 
+	Override:= , 
+	BufferMode:= , 
+	Options:= , 
+	Status=> , 
+	Busy=> , 
+	Error=> , 
+	ErrorID=> );
 
-//Statusampel Implementieren
-fbVereinzelung(
+
+fbAbfullModul(
 	bEnable:= IFC_HW.bEnable, 
 	bExecute:= IFC_HW.bExecute, 
-	bSensor1:= IFC_HW.bEinzelSens1, 
-	bSensor2:= IFC_HW.bEinzelSens2, 
-	bSensor3:= IFC_HW.bEinzelSens3, 
-	bSensor4:= IFC_HW.bBandSens1, 
+	bBandSens1:= IFC_HW.bBandSens1, 
+	bBandSens2:= IFC_HW.bBandSens2, 
+	bBandSens3:= IFC_HW.bBandSens3, 
+	bBandSens4:= IFC_HW.bBandSens4, 
+	bEinzelSens1:= IFC_HW.bEinzelSens1 , 
+	bEinzelSens2:= IFC_HW.bEinzelSens2, 
+	bEinzelSens3:= IFC_HW.bEinzelSens3, 
+	nLagerIndex:= , 
 	bGate1=> fbEZylinder1.bGate, 
 	bGate2=> fbEZylinder2.bGate, 
-	eState=> );
-	
-fbTransport(
-	bEnable:= IFC_HW.bEnable, 
-	bExecute:= IFC_HW.bExecute, 
-	nStation:= nStation, 
-	bSens1:= IFC_HW.bBandSens1, 
-	bSens2:= IFC_HW.bBandSens2, 
-	bSens3:= IFC_HW.bBandSens3, 
-	bSens4:= IFC_HW.bBandSens4, 
-	eState=> , 
-	bStopper1=> IFC_HW.bBandHub1, 
+	bStopper1=> IFC_HW.bBandHub1 , 
 	bStopper2=> IFC_HW.bBandHub2, 
 	bStopper3=> IFC_HW.bBandHub3, 
-	ax:= IFC_HW.ax_BandMotor);
+	eState=> , 
+	axFoerderband:= IFC_HW.ax_BandMotor, 
+	axDispenser1:= IFC_HW.ax_Extruder1, 
+	axDispenser2:= IFC_HW.ax_Extruder2, 
+	axDispenser3:= IFC_HW.ax_Extruder3
+ );
 	
 fbEZylinder1(bGate:= , bError:= ,
 			 bR1=> IFC_HW.bR1AKT1, bR2=> IFC_HW.bR2AKT1);
 fbEZylinder2(bGate:= , bError:= , 
 			bR1=> IFC_HW.bR1AKT2, bR2=> IFC_HW.bR2AKT2 );
 			
-fbAmpel(eState:= fbVereinzelung.eState, bAmpelGrun=> IFC_HW.bAmpelGrun, bAmpelRot=> IFC_HW.bAmpelRot , bAmpelGelb=> IFC_HW.bAmpelGelb);
+fbAmpel(eState:= fbAbfullmodul.eState, bAmpelGrun=> IFC_HW.bAmpelGrun, bAmpelRot=> IFC_HW.bAmpelRot , bAmpelGelb=> IFC_HW.bAmpelGelb);
 			]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
       <LineId Id="230" Count="1" />
       <LineId Id="122" Count="0" />
-      <LineId Id="192" Count="2" />
-      <LineId Id="198" Count="0" />
-      <LineId Id="200" Count="0" />
-      <LineId Id="195" Count="0" />
-      <LineId Id="203" Count="0" />
+      <LineId Id="254" Count="0" />
       <LineId Id="202" Count="0" />
-      <LineId Id="208" Count="0" />
-      <LineId Id="207" Count="0" />
-      <LineId Id="211" Count="0" />
-      <LineId Id="210" Count="0" />
+      <LineId Id="255" Count="0" />
       <LineId Id="206" Count="0" />
       <LineId Id="204" Count="0" />
       <LineId Id="128" Count="11" />
       <LineId Id="127" Count="0" />
-      <LineId Id="124" Count="0" />
+      <LineId Id="279" Count="0" />
+      <LineId Id="281" Count="10" />
+      <LineId Id="280" Count="0" />
+      <LineId Id="292" Count="0" />
+      <LineId Id="294" Count="10" />
+      <LineId Id="293" Count="0" />
+      <LineId Id="305" Count="0" />
+      <LineId Id="307" Count="10" />
+      <LineId Id="306" Count="0" />
       <LineId Id="123" Count="0" />
-      <LineId Id="97" Count="8" />
-      <LineId Id="64" Count="0" />
       <LineId Id="166" Count="0" />
-      <LineId Id="168" Count="11" />
+      <LineId Id="258" Count="19" />
       <LineId Id="167" Count="0" />
+      <LineId Id="278" Count="0" />
       <LineId Id="106" Count="1" />
       <LineId Id="112" Count="2" />
       <LineId Id="152" Count="1" />

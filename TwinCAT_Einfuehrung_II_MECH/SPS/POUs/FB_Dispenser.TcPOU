@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="FB_Dispenser" Id="{b6e3b9f0-d31f-4bd1-a392-726175ee30d8}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Dispenser
+VAR_INPUT
+	bEnable : BOOL;
+	bExecute : BOOL;
+	rDistance : REAL;
+	
+END_VAR
+VAR_OUTPUT
+	eState : eBetriebszustand;
+END_VAR
+VAR
+	mcReset : MC_Reset;
+	mcPower : MC_Power;
+	mcMoveRelative : MC_MoveRelative;
+	nState : INT;
+END_VAR
+
+VAR_IN_OUT
+	// Achsen Ref
+	ax : Axis_Ref;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[ax.ReadStatus();
+
+mcReset(
+	Axis:= ax, 
+	Execute:= , 
+	Done=> , 
+	Busy=> , 
+	Error=> , 
+	ErrorID=> );
+
+mcPower(
+	Axis:= ax, 
+	Enable:= , 
+	Enable_Positive:= , 
+	Enable_Negative:= , 
+	Override:= , 
+	BufferMode:= , 
+	Options:= , 
+	Status=> , 
+	Busy=> , 
+	Error=> , 
+	ErrorID=> );
+	
+mcMoveRelative(
+	Axis:= ax, 
+	Execute:= , 
+	Distance:= 10, 
+	Velocity:= , 
+	Acceleration:= , 
+	Deceleration:= , 
+	Jerk:= , 
+	BufferMode:= , 
+	Options:= , 
+	Done=> , 
+	Busy=> , 
+	Active=> , 
+	CommandAborted=> , 
+	Error=> , 
+	ErrorID=> );
+	
+IF NOT mcPower.Status THEN
+	nState := 0;
+END_IF
+
+CASE nState OF
+	0: // OFF
+	eState := eBetriebszustand.Off;
+	mcPower.Enable := TRUE;
+	mcPower.Enable_Positive := TRUE;
+	IF bEnable AND mcPower.Status THEN
+		nState := 20; //Ready
+	ELSIF bEnable AND NOT mcPower.Status THEN
+		nState := 10; // Init-Rest
+	END_IF
+	
+	
+	10: // Init - Reset
+	eState := eBetriebszustand.Init;
+	mcReset.Execute := TRUE;
+	mcPower.Enable := FALSE;
+	IF mcReset.Done THEN
+		mcReset.Execute := FALSE;
+		nState := 11;
+	END_IF
+	
+	11: // Init - Power
+	eState := eBetriebszustand.Init;
+	mcPower.Enable := TRUE;
+	mcReset.Execute := FALSE;
+	IF mcPower.Status THEN
+		nState := 20;
+	END_IF
+	
+	20: //Ready
+	eState := eBetriebszustand.Ready;
+	IF bExecute THEN
+		nState := 30;
+	END_IF
+	
+	30: //Production
+	eState := eBetriebszustand.Production;
+	mcMoveRelative.Execute := TRUE;
+	mcMoveRelative.Velocity := 20;
+	mcMoveRelative.Acceleration := 20;
+	mcMoveRelative.Distance := rDistance;
+	
+	IF mcMoveRelative.Done THEN
+		nState := 40;
+	END_IF
+	
+	40: // Fertig
+	eState := eBetriebszustand.Done;
+	mcMoveRelative.Execute := FALSE;
+	
+	IF NOT bExecute THEN
+		nState := 20;
+	END_IF
+END_CASE
+	
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="FB_Dispenser">
+      <LineId Id="9" Count="0" />
+      <LineId Id="29" Count="6" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="37" Count="11" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="51" Count="0" />
+      <LineId Id="53" Count="14" />
+      <LineId Id="52" Count="0" />
+      <LineId Id="49" Count="0" />
+      <LineId Id="71" Count="1" />
+      <LineId Id="70" Count="0" />
+      <LineId Id="74" Count="0" />
+      <LineId Id="73" Count="0" />
+      <LineId Id="75" Count="0" />
+      <LineId Id="78" Count="1" />
+      <LineId Id="77" Count="0" />
+      <LineId Id="81" Count="3" />
+      <LineId Id="80" Count="0" />
+      <LineId Id="85" Count="0" />
+      <LineId Id="128" Count="0" />
+      <LineId Id="86" Count="0" />
+      <LineId Id="90" Count="5" />
+      <LineId Id="88" Count="0" />
+      <LineId Id="96" Count="0" />
+      <LineId Id="98" Count="5" />
+      <LineId Id="97" Count="0" />
+      <LineId Id="104" Count="0" />
+      <LineId Id="106" Count="3" />
+      <LineId Id="105" Count="0" />
+      <LineId Id="110" Count="6" />
+      <LineId Id="87" Count="0" />
+      <LineId Id="117" Count="10" />
+      <LineId Id="76" Count="0" />
+      <LineId Id="68" Count="1" />
+      <LineId Id="50" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

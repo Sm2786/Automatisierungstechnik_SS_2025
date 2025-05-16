@@ -1616,7 +1616,7 @@ External Setpoint Generation:
 		</Motion>
 		<Plc>
 			<Project GUID="{596004D0-036B-41D3-A7CC-3D922393AAEA}" Name="SPS" PrjFilePath="SPS\SPS.plcproj" TmcFilePath="SPS\SPS.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="SPS\SPS.tmc" TmcHash="{27EC6607-1346-A785-049E-6F483B026C42}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="SPS\SPS.tmc" TmcHash="{247E05DC-54E2-7F39-FAD2-B98E4B00FCCA}">
 					<Name>SPS Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">
@@ -1647,6 +1647,11 @@ External Setpoint Generation:
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
+							<Name>IFC_HW.bBandSens1</Name>
+							<Comment><![CDATA[ Forderband Sensor 1 (Extruder 1)]]></Comment>
+							<Type>BOOL</Type>
+						</Var>
+						<Var>
 							<Name>IFC_HW.bBandSens2</Name>
 							<Comment><![CDATA[ Forderband Sensor 2 (Extruder 2)]]></Comment>
 							<Type>BOOL</Type>
@@ -1659,11 +1664,6 @@ External Setpoint Generation:
 						<Var>
 							<Name>IFC_HW.bBandSens4</Name>
 							<Comment><![CDATA[ Forderband Sensor 4 (Übergabe Roboter)]]></Comment>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
-							<Name>IFC_HW.bBandSens1</Name>
-							<Comment><![CDATA[ Forderband Sensor 1 (Extruder 1)]]></Comment>
 							<Type>BOOL</Type>
 						</Var>
 						<Var>
@@ -1698,11 +1698,6 @@ External Setpoint Generation:
 							<Type>UINT</Type>
 						</Var>
 						<Var>
-							<Name>IFC_HW.bManEndXmin</Name>
-							<Comment><![CDATA[ Manipulator min Endschalter Achse x]]></Comment>
-							<Type>BOOL</Type>
-						</Var>
-						<Var>
 							<Name>IFC_HW.iTempSens1</Name>
 							<Comment><![CDATA[ Temperatursensor 1]]></Comment>
 							<Type>UINT</Type>
@@ -1711,6 +1706,11 @@ External Setpoint Generation:
 							<Name>IFC_HW.iTempSens2</Name>
 							<Comment><![CDATA[ Temperatursensor 2]]></Comment>
 							<Type>UINT</Type>
+						</Var>
+						<Var>
+							<Name>IFC_HW.bManEndXmin</Name>
+							<Comment><![CDATA[ Manipulator min Endschalter Achse x]]></Comment>
+							<Type>BOOL</Type>
 						</Var>
 						<Var>
 							<Name>IFC_HW.bManEndYmin</Name>
