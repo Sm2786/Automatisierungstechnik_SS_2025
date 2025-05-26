@@ -39,6 +39,7 @@ VAR
     nState : INT := 0;
 	nStation : INT;
 	
+	
 END_VAR
 
 VAR_IN_OUT
@@ -51,46 +52,46 @@ END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[fbVereinzelung(
 	bEnable:= bEnable, 
-	bExecute:= bExecute , 
+	bExecute:=  , 
 	bSensor1:= bEinzelSens1, 
 	bSensor2:= bEinzelSens2 , 
 	bSensor3:= bEinzelSens3 , 
-	bSensor4:= bBandSens4 , 
+	bSensor4:= bBandSens1 , 
 	bGate1=> bGate1 , 
 	bGate2=> bGate2, 
 	eState=> );
 	
 fbTransport(
 	bEnable:= bEnable, 
-	bExecute:= bExecute, 
+	bExecute:= , 
 	nStation:= nStation, 
 	bSens1:= bBandSens1, 
 	bSens2:= bBandSens2, 
 	bSens3:= bBandSens3 , 
 	bSens4:= bBandSens4, 
 	eState=> , 
-	bStopper1=> bBandHub1, 
-	bStopper2=> bBandHub2, 
-	bStopper3=> bBandHub3, 
+	bStopper1=> bStopper1, 
+	bStopper2=> bStopper2, 
+	bStopper3=> bStopper3, 
 	ax:= axFoerderband);
 	
 fbDispenser1(
 	bEnable:= bEnable, 
-	bExecute:= bExecute, 
+	bExecute:=, 
 	rDistance:= , 
 	eState=> , 
 	ax:= axDispenser1);
 	
 fbDispenser2(
 	bEnable:= bEnable, 
-	bExecute:= bExecute, 
+	bExecute:=, 
 	rDistance:= , 
 	eState=> , 
 	ax:= axDispenser2);
 	
 fbDispenser3(
 	bEnable:= bEnable, 
-	bExecute:= bExecute, 
+	bExecute:= , 
 	rDistance:= , 
 	eState=> , 
 	ax:= axDispenser3);
@@ -209,6 +210,7 @@ CASE nState OF
 	END_IF
 	
 	36: // Bewegung zu Abholstation
+	nStation := 4;
 	fbDispenser3.bExecute := FALSE;
 	fbTransport.bExecute := TRUE;
 	
@@ -279,7 +281,9 @@ END_CASE
       <LineId Id="325" Count="3" />
       <LineId Id="330" Count="1" />
       <LineId Id="329" Count="0" />
-      <LineId Id="332" Count="7" />
+      <LineId Id="332" Count="1" />
+      <LineId Id="399" Count="0" />
+      <LineId Id="334" Count="5" />
       <LineId Id="341" Count="8" />
       <LineId Id="270" Count="0" />
       <LineId Id="212" Count="0" />
