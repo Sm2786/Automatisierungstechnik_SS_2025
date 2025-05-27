@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="FB_IotMqttCommunication" Id="{50763065-5558-483e-9e3a-6575a5829d35}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_IotMqttCommunication
+VAR_INPUT
+	sTopicToPublish: STRING(255); // MQTT topic
+    sMessageToPublish: STRING(255); // Message buffer
+
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	fbMqttClient: FB_IotMqttClient;
+	bInitSent : BOOL := FALSE;
+	tmrSendMessageInterval: TON := (PT := T#10S); // Interval timer for publishing
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fbMqttClient.sHostName := '158.180.44.197';
+fbMqttClient.nHostPort := 1883;
+fbMqttClient.sTopicPrefix := 'aut/DerGeraet/';
+fbMqttClient.sClientId := 'Publishing PLC';
+fbMqttClient.sUserName := 'bobm';
+fbMqttClient.sUserPassword := 'letmein';
+     // MQTT client with initialization
+	
+
+fbMqttClient.Execute(bConnect := TRUE);
+
+IF fbMqttClient.bConnected THEN
+    tmrSendMessageInterval(IN := TRUE);
+	
+	IF NOT bInitSent THEN //Init messagees 
+		//send Group name
+        fbMqttClient.Publish(
+            sTopic := '$$groupname',
+            pPayload := ADR('DerGreraet'),
+            nPayloadSize := LEN('DerGreraet') + 1,
+            eQoS := TcIotMqttQos.AtMostOnceDelivery,
+            bRetain := TRUE,
+            bQueue := FALSE
+        );	
+		//send group members
+        fbMqttClient.Publish(
+            sTopic := 'names',
+            pPayload := ADR('Naidr, Schulte, Brandt'),
+            nPayloadSize := LEN('Naidr, Schulte, Brandt') + 1,
+            eQoS := TcIotMqttQos.AtMostOnceDelivery,
+            bRetain := TRUE,
+            bQueue := FALSE
+        );	
+		//send unit
+        fbMqttClient.Publish(
+            sTopic := 'bEnable/$$unit',
+            pPayload := ADR('BOOL'),
+            nPayloadSize := LEN('BOOL') + 1,
+            eQoS := TcIotMqttQos.AtMostOnceDelivery,
+            bRetain := TRUE,
+            bQueue := FALSE
+        );
+		bInitSent := TRUE;
+	END_IF
+	
+    IF tmrSendMessageInterval.Q THEN
+        tmrSendMessageInterval(IN := FALSE);
+
+        fbMqttClient.Publish(
+            sTopic := sTopicToPublish,
+            pPayload := ADR(sMessageToPublish),
+            nPayloadSize := LEN(sMessageToPublish) + 1,
+            eQoS := TcIotMqttQos.AtMostOnceDelivery,
+            bRetain := FALSE,
+            bQueue := FALSE
+        );
+    END_IF
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="FB_IotMqttCommunication">
+      <LineId Id="130" Count="6" />
+      <LineId Id="127" Count="1" />
+      <LineId Id="43" Count="3" />
+      <LineId Id="65" Count="1" />
+      <LineId Id="87" Count="0" />
+      <LineId Id="80" Count="6" />
+      <LineId Id="68" Count="0" />
+      <LineId Id="89" Count="7" />
+      <LineId Id="88" Count="0" />
+      <LineId Id="97" Count="0" />
+      <LineId Id="99" Count="6" />
+      <LineId Id="98" Count="0" />
+      <LineId Id="137" Count="0" />
+      <LineId Id="69" Count="0" />
+      <LineId Id="67" Count="0" />
+      <LineId Id="47" Count="1" />
+      <LineId Id="50" Count="9" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

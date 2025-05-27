@@ -11,11 +11,15 @@ VAR
 	MCPowerDispenser2 : MC_Power;
 	MCPowerDispenser3 : MC_Power;
 	fbAbfullModul : FB_Abfullmodul;
-	
+	fbIotMqttCommunication : FB_IotMqttCommunication;
 	
 
 	ix : REAL;
 	ry : UINT;
+	
+	
+  	
+
 END_VAR
 
 ]]></Declaration>
@@ -104,6 +108,11 @@ fbAbfullModul(
 	axDispenser2:= IFC_HW.ax_Extruder2, 
 	axDispenser3:= IFC_HW.ax_Extruder3
  );
+ 
+ fbIotMqttCommunication(
+	sTopicToPublish:= 'bEnable',
+	sMessageToPublish:= BOOL_TO_STRING(IFC_HW.bEnable),
+);
 	
 fbEZylinder1(bGate:= , bError:= ,
 			 bR1=> IFC_HW.bR1AKT1, bR2=> IFC_HW.bR2AKT1);
@@ -137,6 +146,9 @@ fbAmpel(eState:= fbAbfullmodul.eState, bAmpelGrun=> IFC_HW.bAmpelGrun, bAmpelRot
       <LineId Id="258" Count="19" />
       <LineId Id="167" Count="0" />
       <LineId Id="278" Count="0" />
+      <LineId Id="351" Count="0" />
+      <LineId Id="374" Count="2" />
+      <LineId Id="378" Count="0" />
       <LineId Id="106" Count="1" />
       <LineId Id="112" Count="2" />
       <LineId Id="152" Count="1" />

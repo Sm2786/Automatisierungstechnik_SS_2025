@@ -1,10 +1,19 @@
 <?xml version="1.0"?>
 <TcLicenseInfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2011/11/TcLicenseInfo">
 	<LicenseInfo>
-		<SystemId>{5ED738AB-1B5E-CE23-4D82-1C3F77B1C32F}</SystemId>
-		<IssueTime>2025-05-16T12:46:00</IssueTime>
-		<ExpireTime>2025-05-24T00:00:00</ExpireTime>
-		<LicenseKey>59a5e5d4de6253727125a98f6c3fdb51d5a7f30681927b185934945e21344789a9829df001d40f2a6138386e150267d6593b3f6543ffb8dc6ced32a17b9bfdab026d3495b2f5b19eb34d8680f4703a3b4a1fd35a5eaa0fa176d9bcc49622c2fb04b7cdd6be27cee196fe6ef19610292a698990c42b1f7be4f3603030fe5a2ccbc0fce1f43cc1911686e88594fbe360648e762718e61812714c292771955038df9fe4e2f8111d174923b429af4a1b6c8aba9fcab8d7ef4e1c25c7d7a5b807e35f4671af988f878c250bd8466454db29c51ede5dcf1cf91f8c66bab30e9b4b60cc6b28ce784d571a230b7126171f5bdd66d3a69b987eb44669ce6be7de7ba0c9b9</LicenseKey>
+		<SystemId>{898A20D4-49DD-F3D2-3E23-D6D7D1C7EEF9}</SystemId>
+		<IssueTime>2025-05-27T09:29:00</IssueTime>
+		<ExpireTime>2025-06-04T00:00:00</ExpireTime>
+		<LicenseKey>114f26a034b82c1052095ba1418fb9c3313fa6e78e425b2d705db24acd9c89dff5e8156f923eef09f546b98ee7baaf2424fd3263beee5bf4b24ae70921f54c0c7cd7f313ff6140adf791ee77ad4d9808b11fc1b53fe2d6b75cab6dd1349d94d576ba7ea62f883904a381c2ba2f4c1030aff0c63c92b0f5191d0eeb78f4d3449f9923305d63ce0462e80a3bf2cff9f209a0f1aba2cb7ec432a017c3efb90b738bbbc71fc6c17f8e0158bbf4a31977a0426e23da622ac2d16d4e0c734768083c364939e10020b4b4857f21b63119dac8571be975bebac4bbdbefd62ae99865d3843a8ad48f9b588cde6a84b7a05756723983a493c81a98f3421848855d0540d4e2</LicenseKey>
+		<License>
+			<LicenseId>{973BA0B1-AADD-41C1-B518-302802473922}</LicenseId>
+			<Name>TC3 IoT MQTT Protocol</Name>
+		</License>
+		<License>
+			<LicenseId>{0ABFD2B0-EAE1-4DC7-AABE-03093B0786B7}</LicenseId>
+			<Name>TC3 IoT Communication (MQTT)</Name>
+			<OrderNo>TF6701</OrderNo>
+		</License>
 		<License>
 			<LicenseId>{4C256767-E6E6-4AF5-BD68-9F7ABAD0C200}</LicenseId>
 			<Name>TC3 ADS</Name>
