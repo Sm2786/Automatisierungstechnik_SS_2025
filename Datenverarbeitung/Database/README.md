@@ -1,0 +1,3 @@
+# Bericht Jan Naidr, Cornelius Brandt, Mats Schulte
+
+Die Messages des MQTT Servers werden mittels paho-mqtt ausgelesen. Die von den verschiedene Topics empangenen Messages werden dann nach Topic sortiert und mittels TinyDB in eine databse.json Datei abgespeichert. Mit visualizer.py kann ein Plot des Tempearturverlaufs des roten Dispensers erstellt werden. Diese Datei kann aber auf jede beliebige Datenreihe umgeschrieben werden. ![Temperaturverlauf des roten Dispensers](./temperaturverlauf_roter_dispenser.png)
