@@ -2,11 +2,11 @@ import paho.mqtt.client as mqtt
 from tinydb import TinyDB, Query
 import os
 import sys
-from database import db_connector_temp, db_connector_blue, db_connector_red, db_connector_green, db_connector_ground_truth, db_connector_drop_osci          
+from database import db_connector_temp, db_connector_blue, db_connector_red, db_connector_green, db_connector_ground_truth, db_connector_drop_osci,db_connector_weight        
 
 broker = "158.180.44.197"
 port = 1883
-topic = "iot1/teaching_factory/#"
+topic = "iot1/#"
 payload = "on"
 
 # create function for callback
@@ -23,6 +23,8 @@ def on_message(client, userdata, message):
         db_connector_ground_truth.insert({"ground_truth": message.payload.decode()})
     elif message.topic == "iot1/teaching_factory/drop_oscillation":
         db_connector_drop_osci.insert({"drop_oscillation": message.payload.decode()})
+    elif message.topic == "iot1/teaching_factory/scale/final_weight":
+        db_connector_weight.insert({"final_weight": message.payload.decode()})
 
     print("message received:")
     print("topic: ", message.topic)

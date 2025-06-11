@@ -11,3 +11,5 @@ db_connector_ground_truth = TinyDB(os.path.join(os.path.dirname(os.path.abspath(
 
 
 db_connector_drop_osci = TinyDB(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'database.json')).table('drop_oscillation')
+
+db_connector_weight = TinyDB(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'database.json')).table('final_weight')
