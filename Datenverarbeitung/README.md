@@ -17,3 +17,37 @@ final_weight = 0.09026261 * vibration_index_red + 0.00102775 * fill_level_grams_
 
 ## Ergebnis
 In der Datei [reg_52315859-52316593-52315878.csv](reg_52315859-52316593-52315878.csv) Datei können die Ergebnisse der Linearen Regression für den Datensatz in X.csv eingesehen werden
+
+
+
+## Klassifikation defekter Flaschen
+Zur Erkennung defekter Flaschen wurde ein Klassifikationsmodell auf Basis von Zeitreihendaten (Drop Vibration) entwickelt. Dabei kamen verschiedene Features wie Mittelwert, Standardabweichung und Frequenzkomponenten (10Hz, 20Hz) zum Einsatz. Die nachfolgende Tabelle fasst die Modellgüte (F1-Scores) für verschiedene Feature-Kombinationen zusammen:
+
+| Genutzte Features             | Modell-Typ          |   F1-Score (Training) |   F1-Score (Test) |
+|:------------------------------|:--------------------|----------------------:|------------------:|
+| mean                          | Random Forest       |                 1     |             0.737 |
+| mean                          | KNN                 |                 0.85  |             0.831 |
+| mean                          | Logistic Regression |                 0.726 |             0.767 |
+| mean                          | Decision Tree       |                 1     |             0.737 |
+| mean, std                     | Random Forest       |                 1     |             1     |
+| mean, std                     | KNN                 |                 1     |             1     |
+| mean, std                     | Logistic Regression |                 0.99  |             0.982 |
+| mean, std                     | Decision Tree       |                 1     |             1     |
+| fft_10Hz, fft_20Hz            | Random Forest       |                 1     |             1     |
+| fft_10Hz, fft_20Hz            | KNN                 |                 1     |             1     |
+| fft_10Hz, fft_20Hz            | Logistic Regression |                 1     |             1     |
+| fft_10Hz, fft_20Hz            | Decision Tree       |                 1     |             1     |
+| mean, std, fft_10Hz, fft_20Hz | Random Forest       |                 1     |             1     |
+| mean, std, fft_10Hz, fft_20Hz | KNN                 |                 1     |             1     |
+| mean, std, fft_10Hz, fft_20Hz | Logistic Regression |                 1     |             1     |
+| mean, std, fft_10Hz, fft_20Hz | Decision Tree       |                 1     |             1     |
+
+## Vorgehen zur Klassifikation defekter Flaschen
+
+Zunächst wurden die Zeitreihendaten mit [`plot_data.py`](Aufgabe_4/plot_data.py) visualisiert, um einen ersten Eindruck von den Drop-Oszillationen der Flaschen zu gewinnen. Dabei zeigte sich ein klares Muster zwischen intakten und defekten Flaschen.
+
+Anschließend wurden die Flaschen mit [`label_bottles.py`](Aufgabe_4/label_bottles.py) manuell gelabelt. Für jede Flasche wurde anhand des Plots entschieden, ob sie intakt oder defekt ist.
+
+Im nächsten Schritt erfolgte die Klassifikation mit [`defekte_flaschen_klassifikation.py`](Aufgabe_4/defekte_flaschen_klassifikation.py). Hierbei wurden verschiedene Modelle und Feature-Kombinationen getestet und die Ergebnisse in Form von Konfusionsmatrizen und Tabellen dokumentiert.
+
+![Konfusionsmatrizen der Klassifikation](Aufgabe_4/Confusion_Matrix.png)
