@@ -11,11 +11,11 @@ Durch das Skript lin_reg.py kann ein Linear Regression Modell mit den Daten aus 
 |`vibration index red`, ``fill level grams red``, ``vibration index green``, ``fill level grams green``, ``vibration index blue``, ``fill level grams blue``, ``temperature red``, ``temperature green``, ``temperature blue`` | Lineare Regression  | 0.071|0.1002 |
 
 
-## Formel für das Modell
+### Formel für das Modell
 
 final_weight = 0.09026261 * vibration_index_red + 0.00102775 * fill_level_grams_red + 0.09996379 * vibration_index_green + 0.00056406 * fill_level_grams_green + 0.09822221 * virbration_index_blue + 0.00036188 * fill_level_grams_blue + 0.17195129 * temperature_red - 0.00784363 * temperature_green - 0.03339488 * temperature_blue
 
-## Ergebnis
+### Ergebnis
 In der Datei [reg_52315859-52316593-52315878.csv](reg_52315859-52316593-52315878.csv) Datei können die Ergebnisse der Linearen Regression für den Datensatz in X.csv eingesehen werden
 
 
@@ -42,7 +42,7 @@ Zur Erkennung defekter Flaschen wurde ein Klassifikationsmodell auf Basis von Ze
 | mean, std, fft_10Hz, fft_20Hz | Logistic Regression |                 1     |             1     |
 | mean, std, fft_10Hz, fft_20Hz | Decision Tree       |                 1     |             1     |
 
-## Vorgehen zur Klassifikation defekter Flaschen
+### Vorgehen zur Klassifikation defekter Flaschen
 
 Zunächst wurden die Zeitreihendaten mit [`plot_data.py`](Aufgabe_4/plot_data.py) visualisiert, um einen ersten Eindruck von den Drop-Oszillationen der Flaschen zu gewinnen. Dabei zeigte sich ein klares Muster zwischen intakten und defekten Flaschen.
 
