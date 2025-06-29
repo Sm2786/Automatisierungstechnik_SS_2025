@@ -91,9 +91,9 @@ CASE nState OF
 	eState := eBetriebszustand.Off;
 	mcPower.Enable := TRUE;
 	mcPower.Enable_Positive := TRUE;
-	//Fehler in der Init Logik
+	// Fehler in der Init Logik
 	IF bEnable AND mcPower.Status THEN
-		nState := 20; //Ready
+		nState := 20; // Ready
 	ELSIF bEnable AND NOT mcPower.Status THEN
 		nState := 10; // Init-Rest
 	END_IF
@@ -135,13 +135,8 @@ CASE nState OF
 	
 	31: // Halten
 	eState := eBetriebszustand.Production;
-	//mcVelocity.Execute := FALSE;
 	mcHalt.Execute := TRUE;
-	mcHalt.CommandAborted;
-	mcHalt.Active;
-	mcHalt.Busy;
-	mcHalt.Error;
-	//mcVelocity.Acceleration := rAcceleration;
+	
 	IF mcHalt.Done THEN
 		nState := 40;
 	END_IF
@@ -150,7 +145,6 @@ CASE nState OF
 	40: // Fertig
 	eState := eBetriebszustand.Done;
 	mcHalt.Execute := FALSE;
-	//mcHalt.Deceleration := rAcceleration;
 	
 	IF NOT bExecute THEN
 		nState := 20; 
@@ -171,7 +165,8 @@ END_CASE]]></ST>
       <LineId Id="74" Count="0" />
       <LineId Id="127" Count="1" />
       <LineId Id="126" Count="0" />
-      <LineId Id="89" Count="2" />
+      <LineId Id="418" Count="1" />
+      <LineId Id="91" Count="0" />
       <LineId Id="93" Count="0" />
       <LineId Id="92" Count="0" />
       <LineId Id="121" Count="1" />
@@ -197,10 +192,9 @@ END_CASE]]></ST>
       <LineId Id="155" Count="1" />
       <LineId Id="146" Count="0" />
       <LineId Id="158" Count="0" />
-      <LineId Id="337" Count="15" />
-      <LineId Id="366" Count="0" />
-      <LineId Id="391" Count="2" />
-      <LineId Id="353" Count="12" />
+      <LineId Id="337" Count="13" />
+      <LineId Id="352" Count="9" />
+      <LineId Id="363" Count="2" />
       <LineId Id="94" Count="1" />
     </LineIds>
   </POU>
