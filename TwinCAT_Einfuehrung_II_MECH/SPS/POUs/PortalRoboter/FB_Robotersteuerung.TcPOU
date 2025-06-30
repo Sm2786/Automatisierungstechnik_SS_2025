@@ -1,0 +1,400 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="FB_Robotersteuerung" Id="{58efb2c0-84e8-473e-9583-d46c3f979c12}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Robotersteuerung
+VAR_INPUT
+    bEnable     : BOOL;
+    bExecute    : BOOL;
+
+	bSensBand4 	: BOOL;
+	bSensEndX : BOOL;		// Manipulator min Endschalter Achse x
+	bSensEndY : BOOL;		// Manipulator min Endschalter Achse y
+	bSensEndZ : BOOL;		// Manipulator min Endschalter Achse z
+	bSensEndG : BOOL;		// Manipulator min Endschalter Achse Gripper
+END_VAR
+
+VAR_OUTPUT
+    eState          : eBetriebszustand;
+    bBrakeZ         : BOOL;
+    bGripperClosed  : BOOL;
+END_VAR
+
+VAR_IN_OUT
+    axX : Axis_Ref;
+    axY : Axis_Ref;
+    axZ : Axis_Ref;
+	axG : Axis_Ref;
+	
+	nLagerIndex : INT; 
+END_VAR
+
+VAR
+    fbAchseX : FB_AchsenRoboter;
+    fbAchseY : FB_AchsenRoboter;
+    fbAchseZ : FB_AchsenRoboter;
+	fbAchseG : FB_AchsenRoboter;
+	
+    fbWaage : FB_Waage_Temp;
+    fbThermo : FB_Thermo_Temp;
+	
+	bCmdX, bCmdY, bCmdZ, bCmdG : BOOL;
+
+
+	
+    bGreifer : BOOL;
+    nState   : INT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Axis FB calls (using your new sensor variable names)
+fbAchseX(
+    bEnable := bEnable,
+    bExecute := , // filled in per state
+    rPosition := ,
+    bSensEndstop := bSensEndX,
+    eState => ,
+    ax := axX);
+
+fbAchseY(
+    bEnable := bEnable,
+    bExecute := ,
+    rPosition := ,
+    bSensEndstop := bSensEndY,
+    eState => ,
+    ax := axY);
+
+fbAchseZ(
+    bEnable := bEnable,
+    bExecute := ,
+    rPosition := ,
+    bSensEndstop := bSensEndZ,
+    eState => ,
+    ax := axZ);
+
+fbAchseG(
+    bEnable := bEnable,
+    bExecute := ,
+    rPosition := ,
+    bSensEndstop := bSensEndG,
+    eState => ,
+    ax := axG);
+
+fbWaage();
+fbThermo();
+
+CASE nState OF
+
+0:
+    eState := eBetriebszustand.Off;
+    bBrakeZ := FALSE;
+    bGripperClosed := FALSE;
+    nLagerIndex := 1;
+
+    fbAchseG(bExecute := TRUE, rPosition := 7.0, ax := axG);
+
+    IF bEnable THEN
+        nState := 10;
+    END_IF
+
+10:
+    eState := eBetriebszustand.Init;
+    bBrakeZ := FALSE;
+
+    fbAchseX(bExecute := TRUE, rPosition := GVL_PosKinematic.pXhome, ax := axX);
+    fbAchseY(bExecute := TRUE, rPosition := GVL_PosKinematic.pYhome, ax := axY);
+    fbAchseZ(bExecute := TRUE, rPosition := GVL_PosKinematic.pZhome, ax := axZ);
+
+    IF fbAchseX.eState = eBetriebszustand.Done AND
+       fbAchseY.eState = eBetriebszustand.Done AND
+       fbAchseZ.eState = eBetriebszustand.Done THEN
+        fbAchseX.bExecute := FALSE;
+        fbAchseY.bExecute := FALSE;
+        fbAchseZ.bExecute := FALSE;
+        nState := 20;
+    END_IF
+
+20:
+    eState := eBetriebszustand.Ready;
+
+    IF bSensBand4 THEN
+        nState := 30;
+    END_IF
+
+30:
+    bBrakeZ := TRUE;
+    fbAchseZ(bExecute := TRUE, rPosition := GVL_PosKinematic.pZoff, ax := axZ);
+
+    IF fbAchseZ.eState = eBetriebszustand.Done THEN
+        fbAchseZ.bExecute := FALSE;
+        nState := 31;
+    END_IF
+
+31:
+    IF fbAchseZ.rPosition <= GVL_PosKinematic.pZoff THEN
+        bBrakeZ := FALSE;
+        fbAchseX(bExecute := TRUE, rPosition := GVL_PosKinematic.pXconv, ax := axX);
+        fbAchseY(bExecute := TRUE, rPosition := GVL_PosKinematic.pYconv, ax := axY);
+        IF fbAchseX.eState = eBetriebszustand.Done AND
+           fbAchseY.eState = eBetriebszustand.Done THEN
+            fbAchseX.bExecute := FALSE;
+            fbAchseY.bExecute := FALSE;
+            nState := 32;
+        END_IF
+    END_IF
+
+32:
+    IF fbAchseX.rPosition = GVL_PosKinematic.pXconv AND
+       fbAchseY.rPosition = GVL_PosKinematic.pYconv THEN
+        bBrakeZ := TRUE;
+        fbAchseZ(bExecute := TRUE, rPosition := GVL_PosKinematic.pZconv, ax := axZ);
+        IF fbAchseZ.eState = eBetriebszustand.Done THEN
+            fbAchseZ.bExecute := FALSE;
+            nState := 33;
+        END_IF
+    END_IF
+
+33:
+    IF fbAchseZ.rPosition = GVL_PosKinematic.pZconv THEN
+        bBrakeZ := FALSE;
+        fbAchseG(bExecute := TRUE, rPosition := 9.4, ax := axG);
+        IF fbAchseG.eState = eBetriebszustand.Done THEN
+            fbAchseG.bExecute := FALSE;
+            bGripperClosed := TRUE;
+            nState := 34;
+        END_IF
+    END_IF
+
+34:
+    IF fbAchseG.rPosition = 9.4 THEN
+        bBrakeZ := TRUE;
+        fbAchseZ(bExecute := TRUE, rPosition := GVL_PosKinematic.pZoff, ax := axZ);
+        IF fbAchseZ.eState = eBetriebszustand.Done THEN
+            fbAchseZ.bExecute := FALSE;
+            nState := 40;
+        END_IF
+    END_IF
+
+40:
+    IF fbAchseZ.rPosition <= GVL_PosKinematic.pZoff THEN
+        bBrakeZ := FALSE;
+        fbAchseX(bExecute := TRUE, rPosition := GVL_PosKinematic.pXscale, ax := axX);
+        fbAchseY(bExecute := TRUE, rPosition := GVL_PosKinematic.pYscale, ax := axY);
+        IF fbAchseX.eState = eBetriebszustand.Done AND
+           fbAchseY.eState = eBetriebszustand.Done THEN
+            fbAchseX.bExecute := FALSE;
+            fbAchseY.bExecute := FALSE;
+            nState := 41;
+        END_IF
+    END_IF
+
+41:
+    IF fbAchseX.rPosition = GVL_PosKinematic.pXscale AND
+       fbAchseY.rPosition = GVL_PosKinematic.pYscale THEN
+        bBrakeZ := TRUE;
+        fbAchseZ(bExecute := TRUE, rPosition := GVL_PosKinematic.pZscale, ax := axZ);
+        IF fbAchseZ.eState = eBetriebszustand.Done THEN
+            fbAchseZ.bExecute := FALSE;
+            nState := 42;
+        END_IF
+    END_IF
+
+42:
+    IF fbAchseZ.rPosition = GVL_PosKinematic.pZscale THEN
+        bBrakeZ := FALSE;
+        fbAchseG(bExecute := TRUE, rPosition := 7.0, ax := axG);
+        IF fbAchseG.eState = eBetriebszustand.Done THEN
+            fbAchseG.bExecute := FALSE;
+            bGripperClosed := FALSE;
+            nState := 43;
+        END_IF
+    END_IF
+
+43:
+    fbWaage(bEnable := TRUE, bExecute := TRUE);
+    IF fbWaage.eState = eBetriebszustand.Done THEN
+        fbWaage.bExecute := FALSE;
+        nState := 44;
+    END_IF
+
+44:
+    IF NOT fbWaage.bExecute THEN
+        fbAchseG(bExecute := TRUE, rPosition := 9.4, ax := axG);
+        IF fbAchseG.eState = eBetriebszustand.Done THEN
+            fbAchseG.bExecute := FALSE;
+            bGripperClosed := TRUE;
+            nState := 45;
+        END_IF
+    END_IF
+
+45:
+    IF fbAchseG.rPosition = 9.4 THEN
+        bBrakeZ := TRUE;
+        fbAchseZ(bExecute := TRUE, rPosition := GVL_PosKinematic.pZoff, ax := axZ);
+        IF fbAchseZ.eState = eBetriebszustand.Done THEN
+            fbAchseZ.bExecute := FALSE;
+            nState := 50;
+        END_IF
+    END_IF
+
+50:
+    IF fbAchseZ.rPosition <= GVL_PosKinematic.pZoff THEN
+        bBrakeZ := FALSE;
+        fbAchseX(bExecute := TRUE, rPosition := GVL_PosKinematic.pXheat, ax := axX);
+        fbAchseY(bExecute := TRUE, rPosition := GVL_PosKinematic.pYheat, ax := axY);
+        IF fbAchseX.eState = eBetriebszustand.Done AND
+           fbAchseY.eState = eBetriebszustand.Done THEN
+            fbAchseX.bExecute := FALSE;
+            fbAchseY.bExecute := FALSE;
+            nState := 51;
+        END_IF
+    END_IF
+
+51:
+    IF fbAchseX.rPosition = GVL_PosKinematic.pXheat AND
+       fbAchseY.rPosition = GVL_PosKinematic.pYheat THEN
+        bBrakeZ := TRUE;
+        fbAchseZ(bExecute := TRUE, rPosition := GVL_PosKinematic.pZheat, ax := axZ);
+        IF fbAchseZ.eState = eBetriebszustand.Done THEN
+            fbAchseZ.bExecute := FALSE;
+            nState := 52;
+        END_IF
+    END_IF
+
+52:
+    IF fbAchseZ.rPosition = GVL_PosKinematic.pZheat THEN
+        bBrakeZ := FALSE;
+        fbAchseG(bExecute := TRUE, rPosition := 7.0, ax := axG);
+        IF fbAchseG.eState = eBetriebszustand.Done THEN
+            fbAchseG.bExecute := FALSE;
+            bGripperClosed := FALSE;
+            nState := 53;
+        END_IF
+    END_IF
+
+53:
+    fbThermo(bEnable := TRUE, bExecute := TRUE);
+    IF fbThermo.eState = eBetriebszustand.Done THEN
+        fbThermo.bExecute := FALSE;
+        nState := 54;
+    END_IF
+
+54:
+    IF NOT fbThermo.bExecute THEN
+        fbAchseG(bExecute := TRUE, rPosition := 9.4, ax := axG);
+        IF fbAchseG.eState = eBetriebszustand.Done THEN
+            fbAchseG.bExecute := FALSE;
+            bGripperClosed := TRUE;
+            nState := 55;
+        END_IF
+    END_IF
+
+55:
+    IF fbAchseG.rPosition = 9.4 THEN
+        bBrakeZ := TRUE;
+        fbAchseZ(bExecute := TRUE, rPosition := GVL_PosKinematic.pZoff, ax := axZ);
+        IF fbAchseZ.eState = eBetriebszustand.Done THEN
+            fbAchseZ.bExecute := FALSE;
+            bBrakeZ := FALSE;
+            nState := 60;
+        END_IF
+    END_IF
+
+60:
+    IF fbAchseZ.rPosition <= GVL_PosKinematic.pZoff THEN
+        CASE nLagerIndex OF
+            1: fbAchseX.rPosition := GVL_PosKinematic.pX1stor;
+            2: fbAchseX.rPosition := GVL_PosKinematic.pX2stor;
+            3: fbAchseX.rPosition := GVL_PosKinematic.pX3stor;
+            4: fbAchseX.rPosition := GVL_PosKinematic.pX4stor;
+            ELSE fbAchseX.rPosition := GVL_PosKinematic.pX1stor;
+        END_CASE
+
+        fbAchseX(bExecute := TRUE, ax := axX);
+        fbAchseY(bExecute := TRUE, rPosition := GVL_PosKinematic.pYstor, ax := axY);
+
+        IF fbAchseX.eState = eBetriebszustand.Done AND
+           fbAchseY.eState = eBetriebszustand.Done THEN
+            fbAchseX.bExecute := FALSE;
+            fbAchseY.bExecute := FALSE;
+            nState := 61;
+        END_IF
+    END_IF
+
+61:
+    IF fbAchseY.rPosition = GVL_PosKinematic.pYstor THEN
+        bBrakeZ := TRUE;
+        fbAchseZ(bExecute := TRUE, rPosition := GVL_PosKinematic.pZstor, ax := axZ);
+        IF fbAchseZ.eState = eBetriebszustand.Done THEN
+            fbAchseZ.bExecute := FALSE;
+            nState := 62;
+        END_IF
+    END_IF
+
+62:
+    IF fbAchseZ.rPosition = GVL_PosKinematic.pZstor THEN
+        bBrakeZ := FALSE;
+        fbAchseG(bExecute := TRUE, rPosition := 7.0, ax := axG);
+        IF fbAchseG.eState = eBetriebszustand.Done THEN
+            fbAchseG.bExecute := FALSE;
+            bGripperClosed := FALSE;
+            nState := 70;
+        END_IF
+    END_IF
+
+70:
+    IF fbAchseG.rPosition = 7.0 THEN
+        bBrakeZ := TRUE;
+        fbAchseZ(bExecute := TRUE, rPosition := GVL_PosKinematic.pZoff, ax := axZ);
+        IF fbAchseZ.eState = eBetriebszustand.Done THEN
+            fbAchseZ.bExecute := FALSE;
+            nState := 71;
+        END_IF
+    END_IF
+
+71:
+    IF fbAchseZ.rPosition <= GVL_PosKinematic.pZoff THEN
+        bBrakeZ := FALSE;
+        fbAchseX(bExecute := TRUE, rPosition := GVL_PosKinematic.pXhome, ax := axX);
+        fbAchseY(bExecute := TRUE, rPosition := GVL_PosKinematic.pYhome, ax := axY);
+        IF fbAchseX.eState = eBetriebszustand.Done AND
+           fbAchseY.eState = eBetriebszustand.Done THEN
+            fbAchseX.bExecute := FALSE;
+            fbAchseY.bExecute := FALSE;
+            nState := 72;
+        END_IF
+    END_IF
+
+72:
+    IF fbAchseX.rPosition = GVL_PosKinematic.pXhome AND
+       fbAchseY.rPosition = GVL_PosKinematic.pYhome THEN
+        bBrakeZ := TRUE;
+        fbAchseZ(bExecute := TRUE, rPosition := GVL_PosKinematic.pZhome, ax := axZ);
+        IF fbAchseZ.eState = eBetriebszustand.Done THEN
+            fbAchseZ.bExecute := FALSE;
+            nState := 80;
+        END_IF
+    END_IF
+
+80:
+    eState := eBetriebszustand.Done;
+    bBrakeZ := FALSE;
+
+    IF nLagerIndex < 4 THEN
+        nLagerIndex := nLagerIndex + 1;
+    ELSE
+        nLagerIndex := 1;
+    END_IF
+
+    IF NOT bExecute THEN
+        nState := 20;
+    END_IF
+
+END_CASE
+]]></ST>
+    </Implementation>
+    <LineIds Name="FB_Robotersteuerung">
+      <LineId Id="983" Count="343" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <GVL Name="GVL_PosKinematic" Id="{c04239e3-aca5-4f4f-844d-490e4cbde3f8}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	// Home position
+	pXhome : REAL := 29;
+	pYhome : REAL := 145.5;
+	pZhome : REAL := 45;
+	
+	// Conveyor position
+	pXconv : REAL := 29;
+	pYconv : REAL := 145.5;
+	pZconv : REAL := 130;
+	
+	//Scale position
+	pXscale : REAL := 36;
+	pYscale : REAL := 7.5;
+	pZscale : REAL := 131.5;
+	
+	// Heating position
+	pXheat : REAL := 218.5;
+	pYheat : REAL := 7;
+	pZheat : REAL := 159;
+	
+	// Storage position
+	pX1stor : REAL := 107;
+	pX2stor : REAL := 158.7;
+	pX3stor : REAL := 209.3;
+	pX4stor : REAL := 260.3;
+	pYstor : REAL := 139;
+	pZstor : REAL := 120;
+	
+	// Z offset height
+	pZoff : REAL := 45;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

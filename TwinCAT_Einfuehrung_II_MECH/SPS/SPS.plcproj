@@ -21,6 +21,10 @@
     <Compile Include="DUTs\eBetriebszustand.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="GVLs\GVL_PosKinematic.TcGVL">
+      <SubType>Code</SubType>
+      <LinkAlways>true</LinkAlways>
+    </Compile>
     <Compile Include="GVLs\IFC_HW.TcGVL">
       <SubType>Code</SubType>
     </Compile>
@@ -57,6 +61,18 @@
     <Compile Include="POUs\MAIN.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\PortalRoboter\FB_AchsenRoboter.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\PortalRoboter\FB_Robotersteuerung.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\PortalRoboter\FB_Thermo_Temp.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\PortalRoboter\FB_Waage_Temp.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\Transport\FB_TransportBand.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -76,6 +92,7 @@
   <ItemGroup>
     <Folder Include="DUTs" />
     <Folder Include="GVLs" />
+    <Folder Include="POUs\PortalRoboter" />
     <Folder Include="POUs\Transport" />
     <Folder Include="VISUs" />
     <Folder Include="POUs" />

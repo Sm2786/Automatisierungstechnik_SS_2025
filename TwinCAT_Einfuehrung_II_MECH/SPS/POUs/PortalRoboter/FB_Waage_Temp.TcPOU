@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="FB_Waage_Temp" Id="{4d13bfac-e296-48c0-b6fe-def2b825f994}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Waage_Temp
+VAR_INPUT
+    bEnable  : BOOL;
+    bExecute : BOOL;
+END_VAR
+VAR_OUTPUT
+    eState   : eBetriebszustand;
+END_VAR
+VAR
+    timer    : TON;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[timer(IN := bEnable AND bExecute, PT := T#1S);
+
+IF bEnable AND bExecute THEN
+    eState := eBetriebszustand.Production;
+
+    timer(IN := TRUE);
+    IF timer.Q THEN
+        eState := eBetriebszustand.Done;
+    END_IF
+ELSE
+    timer(IN := FALSE);
+    eState := eBetriebszustand.Ready;
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="FB_Waage_Temp">
+      <LineId Id="20" Count="11" />
+      <LineId Id="9" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
