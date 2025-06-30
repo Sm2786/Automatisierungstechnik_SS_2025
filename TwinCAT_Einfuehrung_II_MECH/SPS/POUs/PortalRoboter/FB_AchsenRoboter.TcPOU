@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.15">
+  <POU Name="FB_AchsenRoboter" Id="{f6cb54f9-f7bc-4266-a06d-d060f431806e}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_AchsenRoboter
+VAR_INPUT
+	bEnable        	: BOOL;
+    bExecute       	: BOOL;
+    rPosition      	: REAL;
+    bSensEndstop    : BOOL;
+	bMoveing    	: BOOL;
+END_VAR
+VAR_OUTPUT
+	eState			: eBetriebszustand;
+END_VAR
+VAR_IN_OUT
+	ax				: Axis_Ref;
+END_VAR
+VAR
+	mcPower     	: MC_Power;
+    mcMoveAbs   	: MC_MoveAbsolute;
+    mcHome      	: MC_Home;
+	
+	bExecuteLast 	: BOOL;
+    bHomeingDone     : BOOL;
+    nState      	: INT := 0;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CASE nState OF
+	0: //Off
+		eState := eBetriebszustand.Off;
+		IF bEnable THEN
+			nState := 1;
+		END_IF
+	
+	1: //Init
+		eState := eBetriebszustand.Init;
+		mcPower(Enable := TRUE, Enable_Positive := TRUE,Enable_Negative := TRUE, Axis := ax);
+        IF mcPower.Status THEN
+            nState := 11;
+        END_IF
+	
+	11: // Homeing
+		eState := eBetriebszustand.Init;
+		mcHome(
+            Execute := TRUE,
+            Axis := ax,
+            HomingMode := MC_HomingMode.MC_DefaultHoming,
+            bCalibrationCam := NOT bSensEndstop
+        );
+		
+		IF mcHome.Done THEN
+			bHomeingDone := TRUE;
+			mcHome.Execute := FALSE;
+			nState := 2;
+		END_IF
+	
+	2: //Ready
+		eState := eBetriebszustand.Ready;
+		IF bExecute AND bHomeingDone THEN
+			nState := 3;
+		ELSIF bExecute AND NOT bHomeingDone THEN
+			nState := 11;
+		END_IF
+			
+		
+	3: //Achsen Bewegung
+		eState := eBetriebszustand.Ready;
+		IF NOT bMoveing THEN
+			mcMoveAbs.Execute := TRUE;
+			mcMoveAbs(
+				Axis := ax,
+				Position := rPosition,
+				Velocity := 20.0,
+				Acceleration := 50.0,
+				Deceleration := 50.0,
+				Execute := mcMoveAbs.Execute
+			);
+			bMoveing := TRUE;
+		ELSIF mcMoveAbs.Done THEN
+			bMoveing := FALSE;
+			nState := 4;
+		ELSE
+			mcMoveAbs.Execute := FALSE;
+			nState := 90;
+		END_IF
+	
+	4: //Done
+		eState := eBetriebszustand.Done;
+		IF NOT bExecute THEN
+			nState := 2;
+		END_IF
+		
+	90: //Error
+		eState := eBetriebszustand.Error;
+		IF NOT bEnable AND NOT bExecute THEN
+			nState := 1;
+		END_IF
+			
+	
+		
+END_CASE]]></ST>
+    </Implementation>
+    <LineIds Name="FB_AchsenRoboter">
+      <LineId Id="9" Count="0" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="30" Count="6" />
+      <LineId Id="39" Count="2" />
+      <LineId Id="38" Count="0" />
+      <LineId Id="42" Count="2" />
+      <LineId Id="46" Count="4" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="51" Count="2" />
+      <LineId Id="55" Count="1" />
+      <LineId Id="54" Count="0" />
+      <LineId Id="57" Count="5" />
+      <LineId Id="67" Count="1" />
+      <LineId Id="66" Count="0" />
+      <LineId Id="63" Count="1" />
+      <LineId Id="69" Count="1" />
+      <LineId Id="73" Count="8" />
+      <LineId Id="71" Count="0" />
+      <LineId Id="91" Count="1" />
+      <LineId Id="72" Count="0" />
+      <LineId Id="90" Count="0" />
+      <LineId Id="82" Count="0" />
+      <LineId Id="84" Count="0" />
+      <LineId Id="88" Count="0" />
+      <LineId Id="93" Count="11" />
+      <LineId Id="83" Count="0" />
+      <LineId Id="65" Count="0" />
+      <LineId Id="37" Count="0" />
+      <LineId Id="29" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
