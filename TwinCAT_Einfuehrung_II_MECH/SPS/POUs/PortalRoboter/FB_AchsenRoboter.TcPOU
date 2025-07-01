@@ -21,7 +21,7 @@ VAR
     mcHome      	: MC_Home;
 	mcReset			: MC_Reset;
 	
-	bExecuteLast 	: BOOL;
+	bstoreExecute 	: BOOL;
     bHomeingDone     : BOOL;
     nState      	: INT := 0;
 END_VAR
@@ -75,40 +75,43 @@ CASE nState OF
         );
 		
 		IF mcHome.Done THEN
-			bHomeingDone := TRUE;
 			mcHome.Execute := FALSE;
+			bHomeingDone := TRUE;
 			nState := 2;
 		END_IF
 	
 	2: //Ready
 		eState := eBetriebszustand.Ready;
-		IF bExecute AND bHomeingDone AND NOT bExecuteLast THEN
+		IF bExecute AND bHomeingDone AND NOT bstoreExecute THEN
 			nState := 3;
 		ELSIF bExecute AND NOT bHomeingDone THEN
 			nState := 11;
 		END_IF
-		bExecuteLast := bExecute;
+		bstoreExecute := bExecute;
 			
 		
 	3: //Achsen Bewegung
-		eState := eBetriebszustand.Ready;
+		eState := eBetriebszustand.Production;
 		IF NOT bMoveing THEN
 			mcMoveAbs.Execute := TRUE;
 			mcMoveAbs(
 				Axis := ax,
 				Position := rPosition,
-				Velocity := 20.0,
+				Velocity := 30.0,
 				Acceleration := 50.0,
 				Deceleration := 50.0,
 				Execute := mcMoveAbs.Execute
 			);
 			bMoveing := TRUE;
-		ELSIF mcMoveAbs.Done THEN
-			bMoveing := FALSE;
-			nState := 4;
 		ELSE
 			mcMoveAbs.Execute := FALSE;
-			nState := 90;
+			mcMoveABs(Execute := FALSE, Axis := ax);
+		END_IF
+		
+		IF mcMoveAbs.Done THEN
+			bMoveing := FALSE;
+			nState := 4;
+			
 		END_IF
 	
 	4: //Done
@@ -142,7 +145,8 @@ END_CASE]]></ST>
       <LineId Id="46" Count="4" />
       <LineId Id="45" Count="0" />
       <LineId Id="51" Count="2" />
-      <LineId Id="55" Count="1" />
+      <LineId Id="186" Count="0" />
+      <LineId Id="56" Count="0" />
       <LineId Id="54" Count="0" />
       <LineId Id="57" Count="5" />
       <LineId Id="67" Count="1" />
@@ -151,13 +155,13 @@ END_CASE]]></ST>
       <LineId Id="63" Count="1" />
       <LineId Id="69" Count="1" />
       <LineId Id="73" Count="8" />
-      <LineId Id="71" Count="0" />
-      <LineId Id="91" Count="1" />
-      <LineId Id="72" Count="0" />
-      <LineId Id="90" Count="0" />
-      <LineId Id="82" Count="0" />
-      <LineId Id="84" Count="0" />
+      <LineId Id="71" Count="1" />
+      <LineId Id="187" Count="1" />
       <LineId Id="88" Count="0" />
+      <LineId Id="189" Count="2" />
+      <LineId Id="194" Count="0" />
+      <LineId Id="193" Count="0" />
+      <LineId Id="192" Count="0" />
       <LineId Id="93" Count="11" />
       <LineId Id="83" Count="0" />
       <LineId Id="65" Count="0" />
