@@ -1431,9 +1431,7 @@ External Setpoint Generation:
 	</ImageDatas>
 	<Project ProjectGUID="{F802DAAC-8DA7-42B6-8F7D-FC83F3FC30E2}" Target64Bit="true" ShowHideConfigurations="#x6">
 		<System>
-			<Settings MaxCpus="2" NonWinCpus="1">
-				<Cpu CpuId="1"/>
-			</Settings>
+			<Settings MaxCpus="2" NonWinCpus="1"/>
 			<Tasks>
 				<Task Id="3" Priority="20" CycleTime="100000" AmsPort="350" AdtTasks="true">
 					<Name>PlcTask</Name>
@@ -2717,7 +2715,7 @@ External Setpoint Generation:
 		</Motion>
 		<Plc>
 			<Project GUID="{596004D0-036B-41D3-A7CC-3D922393AAEA}" Name="SPS" PrjFilePath="SPS\SPS.plcproj" TmcFilePath="SPS\SPS.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="SPS\SPS.tmc" TmcHash="{9156FCE9-FB51-EF2C-8F0F-D5BABE123099}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="SPS\SPS.tmc" TmcHash="{E14025CE-AF84-FD92-D8FA-C9F519F6DCA6}">
 					<Name>SPS Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">

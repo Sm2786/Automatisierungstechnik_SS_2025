@@ -2083,8 +2083,6 @@ External Setpoint Generation:
 						<Dynamic AccelerationMaximum="100" DecelerationMaximum="100" Acceleration="10" Deceleration="10" Jerk="20"/>
 						<Velo RefSearch="20" RefSync="20" SlowManual="5" FastManual="15" Maximum="30"/>
 						<OtherSettings AllowMotionCmdToSlave="true"/>
-						<ParameterChanged>242</ParameterChanged>
-						<ParameterChanged>241</ParameterChanged>
 					</AxisPara>
 					<Encoder Name="Enc" EncType="1">
 						<EncPara ScaleFactorNumerator="0.0025">
@@ -2244,8 +2242,6 @@ External Setpoint Generation:
 						<Dynamic AccelerationMaximum="100" DecelerationMaximum="100" Acceleration="10" Deceleration="10" Jerk="20"/>
 						<Velo RefSearch="20" RefSync="20" SlowManual="5" FastManual="15" Maximum="30"/>
 						<OtherSettings AllowMotionCmdToSlave="true"/>
-						<ParameterChanged>242</ParameterChanged>
-						<ParameterChanged>241</ParameterChanged>
 					</AxisPara>
 					<Encoder Name="Enc" EncType="1">
 						<EncPara ScaleFactorNumerator="0.0025">
@@ -2405,8 +2401,6 @@ External Setpoint Generation:
 						<Dynamic AccelerationMaximum="100" DecelerationMaximum="100" Acceleration="10" Deceleration="10" Jerk="20"/>
 						<Velo RefSearch="20" RefSync="20" SlowManual="5" FastManual="15" Maximum="30"/>
 						<OtherSettings AllowMotionCmdToSlave="true"/>
-						<ParameterChanged>242</ParameterChanged>
-						<ParameterChanged>241</ParameterChanged>
 					</AxisPara>
 					<Encoder Name="Enc" EncType="1">
 						<EncPara ScaleFactorNumerator="0.0025">
@@ -2566,8 +2560,6 @@ External Setpoint Generation:
 						<Dynamic AccelerationMaximum="100" DecelerationMaximum="100" Acceleration="10" Deceleration="10" Jerk="20"/>
 						<Velo RefSearch="20" RefSync="20" SlowManual="5" FastManual="15" Maximum="30"/>
 						<OtherSettings AllowMotionCmdToSlave="true"/>
-						<ParameterChanged>242</ParameterChanged>
-						<ParameterChanged>241</ParameterChanged>
 					</AxisPara>
 					<Encoder Name="Enc" EncType="1">
 						<EncPara ScaleFactorNumerator="0.0025">
@@ -2725,7 +2717,7 @@ External Setpoint Generation:
 		</Motion>
 		<Plc>
 			<Project GUID="{596004D0-036B-41D3-A7CC-3D922393AAEA}" Name="SPS" PrjFilePath="SPS\SPS.plcproj" TmcFilePath="SPS\SPS.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
-				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="SPS\SPS.tmc" TmcHash="{9156FCE9-FB51-EF2C-8F0F-D5BABE123099}">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="SPS\SPS.tmc" TmcHash="{E14025CE-AF84-FD92-D8FA-C9F519F6DCA6}">
 					<Name>SPS Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">
